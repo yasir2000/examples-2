@@ -13,82 +13,134 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 
 # Serverless Framework Node SQS Producer-Consumer on AWS
 
-This template demonstrates how to develop and deploy a simple SQS-based producer-consumer service running on AWS Lambda using the Serverless Framework and the [Lift](https://github.com/getlift/lift) plugin. It allows to accept messages, for which computation might be time or resource intensive, and offload their processing to an asynchronous background process for a faster and more resilient system.
+This template demonstrates how to develop and deploy a simple SQS-based producer-consumer service running on AWS Lambda using the traditional Serverless Framework.
 
-## Anatomy of the template
+## Use Cases
 
-This template defines one function `producer` and one Lift construct - `jobs`. The producer function is triggered by `http` event type, accepts JSON payloads and sends it to a SQS queue for asynchronous processing. The SQS queue is created by the `jobs` queue construct of the Lift plugin. The queue is set up with a "dead-letter queue" (to receive failed messages) and a `worker` Lambda function that processes the SQS messages.
+- Asynchronous message processing
+- Queue-based workflows
+- Serverless application development
 
-To learn more:
+## Prerequisites
 
-- about `http` event configuration options, refer to [http event docs](https://www.serverless.com/framework/docs/providers/aws/events/apigateway/)
-- about the `queue` construct, refer to [the `queue` documentation in Lift](https://github.com/getlift/lift/blob/master/docs/queue.md)
-- about the Lift plugin in general, refer to [the Lift project](https://github.com/getlift/lift)
-- about SQS processing with AWS Lambda, please refer to the official [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html)
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-### Deployment
+## Installation
 
-Install dependencies with:
+Install dependencies:
 
-```
+```bash
 npm install
 ```
 
-Then deploy:
-
+Or using yarn:
+```bash
+yarn install
 ```
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function producer
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
 serverless deploy
 ```
 
-After running deploy, you should see output similar to:
-
+Deploy a single function (faster for development):
 ```bash
-Serverless: Packaging service...
-Serverless: Excluding development dependencies...
-Serverless: Creating Stack...
-Serverless: Checking Stack create progress...
-........
-Serverless: Stack create finished...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading artifacts...
-Serverless: Uploading service aws-node-sqs-worker.zip file to S3 (21.45 MB)...
-Serverless: Validating template...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-................................................
-Serverless: Stack update finished...
-Service Information
-service: aws-node-sqs-worker
-stage: dev
-region: us-east-1
-stack: aws-node-sqs-worker-dev
-resources: 17
-api keys:
-  None
-endpoints:
-  POST - https://xxxx.execute-api.us-east-1.amazonaws.com/produce
-functions:
-  producer: aws-node-sqs-worker-dev-producer
-  jobsWorker: aws-node-sqs-worker-dev-jobsWorker
-layers:
-  None
-jobs:
-  queueUrl: https://sqs.us-east-1.amazonaws.com/xxxx/aws-node-sqs-worker-dev-jobs
+serverless deploy function --function functionName
 ```
 
+### Deploy to specific stage/region
 
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [http event docs](https://www.serverless.com/framework/docs/providers/aws/events/apigateway/).
-
-### Invocation
-
-After successful deployment, you can now call the created API endpoint with `POST` request to invoke `producer` function:
-
+Deploy to a specific stage:
 ```bash
-curl --request POST 'https://xxxxxx.execute-api.us-east-1.amazonaws.com/produce' --header 'Content-Type: application/json' --data-raw '{"name": "John"}'
+serverless deploy --stage production
 ```
 
-In response, you should see output similar to:
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+This function processes SQS messages. Send a message to the queue to trigger execution.
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function producer
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function producer --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-{"message": "Message accepted!"}
+serverless remove
 ```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

@@ -10,64 +10,149 @@ authorLink: 'https://github.com/erezrokah'
 authorName: 'Erez Rokah'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/26760571?v=4&s=140'
 -->
-# API Gateway Custom Authorizer Function + Auth0
 
-This is an example of how to protect API endpoints with [auth0](https://auth0.com/), JSON Web Tokens (jwt) and a [custom authorizer lambda function](https://serverless.com/framework/docs/providers/aws/events/apigateway#http-endpoints-with-custom-authorizers).
+# AWS API Gateway Custom Authorizer Function with Auth0 example in NodeJS
 
-Custom Authorizers allow you to run an AWS Lambda Function before your targeted AWS Lambda Function. This is useful for Microservice Architectures or when you simply want to do some Authorization before running your business logic.
+This is an example of how to protect API endpoints with Auth0, JSON Web Tokens (jwt) and a custom authorizer lambda function.
 
-### [View live demo](http://auth0-serverless-protected-routes-demo.surge.sh/)
+## Use Cases
 
-## Use cases
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-- Protect API routes for authorized users
-- Rate limiting APIs
+## Prerequisites
 
-## Setup
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-1. `npm install` json web token dependencies
+## Installation
 
-2. Setup an [auth0 application](https://auth0.com/docs/applications).
+Install dependencies:
 
-3. Get your `Client ID` (under `applications->${YOUR_APP_NAME}->settings`) and plugin your `AUTH0_CLIENT_ID` in a new file called `secrets.json` (based on `secrets.example.json`).
-
-4. Get your `public key` (under `applications->${YOUR_APP_NAME}->settings->Show Advanced Settings->Certificates->DOWNLOAD CERTIFICATE`). Download it as `PEM` format and save it as a new file called `public_key`
-
-5. Deploy the service with `serverless deploy` and grab the public and private endpoints.
-
-6. Plugin your `AUTH0_CLIENT_ID`, `AUTH0_DOMAIN`, and the `PUBLIC_ENDPOINT` + `PRIVATE_ENDPOINT` from aws in top of the `frontend/app.js` file.
-
-  ```js
-  /* frontend/app.js */
-  // replace these values in app.js
-  const AUTH0_CLIENT_ID = 'your-auth0-client-id-here';
-  const AUTH0_DOMAIN = 'your-auth0-domain-here.auth0.com';
-  const PUBLIC_ENDPOINT = 'https://your-aws-endpoint-here.amazonaws.com/dev/api/public';
-  const PRIVATE_ENDPOINT = 'https://your-aws-endpoint-here.us-east-1.amazonaws.com/dev/api/private';
-  ```
-
-7. Deploy Frontend to host of your choosing and make sure to configure the `Allowed Callback URL` and `Allowed Origins` in your auth0 client in the [auth0 dashboard](https://manage.auth0.com). We used `http://auth0-serverless-protected-routes-demo.surge.sh/` for our demo.
-
-## Custom authorizer functions
-
-[Custom authorizers functions](https://aws.amazon.com/blogs/compute/introducing-custom-authorizers-in-amazon-api-gateway/) are executed before a Lambda function is executed and return an Error or a Policy document.
-
-The Custom authorizer function is passed an `event` object as below:
-
-```javascript
-{
-  "type": "TOKEN",
-  "authorizationToken": "<Incoming bearer token>",
-  "methodArn": "arn:aws:execute-api:<Region id>:<Account id>:<API id>/<Stage>/<Method>/<Resource path>"
-}
+```bash
+npm install
 ```
 
-## Frontend
+Or using yarn:
+```bash
+yarn install
+```
 
-The frontend is a bare bones vanilla javascript implementation.
+## Local Development
 
-You can replace it with whatever frontend framework you like =)
+### Test individual functions
 
-If you do implement in another framework, please consider adding it our [growing list of examples](https://github.com/serverless/examples/)!
+Test a function locally:
+```bash
+serverless invoke local --function auth
+```
 
-API calls are made with the browser's native `fetch` api.
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function auth
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function auth --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `AUTH0_CLIENT_ID`: ${file(./secrets.json):AUTH0_CLIENT_ID}
+- `AUTH0_CLIENT_PUBLIC_KEY`: ${file(./public_key)}
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

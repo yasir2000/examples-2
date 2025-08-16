@@ -10,167 +10,140 @@ authorLink: 'https://github.com/neilime'
 authorName: 'Emilien Escalle'
 authorAvatar: 'https://avatars3.githubusercontent.com/u/314088?s=140&v=4'
 -->
-# Nest application example
 
-This example demonstrates how to setup a [Nest](https://github.com/nestjs/nest) application.
+# AWS Nest application example (NodeJS & Typescript)
+
+This example demonstrates how to setup a simple [Nest](https://github.com/nestjs/nest) application.
 
 ## Use Cases
 
-- Setup & deploy a [Nest Application starter](https://github.com/nestjs/typescript-starter)
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## Running the app locally
+## Prerequisites
 
-```bash
-npm start
-```
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-Which should result in:
+## Installation
 
-```bash
-$ sls offline start
-Serverless: Compiling with Typescript...
-Serverless: Using local tsconfig.json
-Serverless: Typescript compiled.
-Serverless: Watching typescript files...
-Serverless: Starting Offline: dev/us-east-1.
-
-Serverless: Routes for main:
-Serverless: ANY /{proxy*}
-
-Serverless: Offline listening on http://localhost:3000
-```
-
-Then browse http://localhost:3000/hello
-
-The logs should be :
+Install dependencies:
 
 ```bash
-Serverless: ANY /hello (λ: main)
-[Nest] 7956   - 2018-12-13 10:34:22   [NestFactory] Starting Nest application... +6933ms
-[Nest] 7956   - 2018-12-13 10:34:22   [InstanceLoader] AppModule dependencies initialized +4ms
-[Nest] 7956   - 2018-12-13 10:34:22   [RoutesResolver] AppController {/}: +2ms
-[Nest] 7956   - 2018-12-13 10:34:22   [RouterExplorer] Mapped {/hello, GET} route +1ms
-[Nest] 7956   - 2018-12-13 10:34:22   [NestApplication] Nest application successfully started +1ms
-Serverless: [200] {"statusCode":200,"body":"Hello World!","headers":{"x-powered-by":"Express","content-type":"text/html; charset=utf-8","content-length":"12","etag":"W/\"c-Lve95gjOVATpfV8EL5X4nxwjKHE\"","date":"Thu, 13 Dec 2018 09:34:22 GMT","connection":"keep-alive"},"isBase64Encoded":false}
+npm install
 ```
 
-### Skiping cache invalidation
+Or using yarn:
+```bash
+yarn install
+```
 
-Skiping cache invalidation is the same behavior as a deployed function
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function main
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function main
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function main --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-npm start -- --skipCacheInvalidation
+serverless remove
 ```
 
-## Deploy
-
-In order to deploy the endpoint, simply run:
-
+Remove from specific stage:
 ```bash
-sls deploy
+serverless remove --stage production
 ```
 
-The expected result should be similar to:
+## Troubleshooting
 
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
 ```bash
-$ sls deploy
-Serverless: Compiling with Typescript...
-Serverless: Using local tsconfig.json
-Serverless: Typescript compiled.
-Serverless: Packaging service...
-Serverless: Excluding development dependencies...
-Serverless: Creating Stack...
-Serverless: Checking Stack create progress...
-.....
-Serverless: Stack create finished...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading artifacts...
-Serverless: Uploading service .zip file to S3 (32.6 MB)...
-Serverless: Validating template...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-..............................
-Serverless: Stack update finished...
-Service Information
-service: serverless-nest-example
-stage: dev
-region: us-east-1
-stack: serverless-nest-example-dev
-api keys:
-  None
-endpoints:
-  ANY - https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/{proxy?}
-functions:
-  main: serverless-nest-example-dev-main
-layers:
-  None
+SLS_DEBUG=* serverless deploy
 ```
 
-## Usage
+### AWS Specific Issues
 
-Send an HTTP request directly to the endpoint using a tool like curl
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
 
-```bash
-curl https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/hello
-```
+## Additional Resources
 
-## Tail logs
-
-```bash
-sls logs --function main --tail
-```
-
-## Scaling
-
-By default, AWS Lambda limits the total concurrent executions across all functions within a given region to 100. The default limit is a safety limit that protects you from costs due to potential runaway or recursive functions during initial development and testing. To increase this limit above the default, follow the steps in [To request a limit increase for concurrent executions](http://docs.aws.amazon.com/lambda/latest/dg/concurrent-executions.html#increase-concurrent-executions-limit).
-
-## Cold start
-
-Cold start may cause latencies for your application
-See : https://serverless.com/blog/keep-your-lambdas-warm/
-
-These behavior can be fixed with the plugin [serverless-plugin-warmup](https://www.npmjs.com/package/serverless-plugin-warmup) 
-
-1. Install the plugin
-
-```bash 
-npm install serverless-plugin-warmup --save-dev
-```
-
-2. Enable the plugin
-
-```yaml
-plugins:
-  - '@hewmen/serverless-plugin-typescript'
-  - serverless-plugin-optimize
-  - serverless-offline
-  - serverless-plugin-warmup
-
-custom:
-  # Enable warmup on all functions (only for production and staging)
-  warmup:      
-      - production
-      - staging
-```
-
-## Benchmark
-
-A basic benchmark script can be used locally, it performs 1000 "GET" requests on "http://localhost:3000/hello"
-
-
-```bash
-# /!\ The app must run locally
-npm start # Or npm start -- --skipCacheInvalidation for better performances
-
-# Run bench
-node bench.js
-```
-
-The expected result should be similar to:
-
-```bash
-$ node bench.js
-1000 "GET" requests to "http://localhost:3000/hello"
-total: 8809.733ms
-Average:  8.794ms
-```
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

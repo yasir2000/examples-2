@@ -10,96 +10,133 @@ authorLink: 'https://github.com/aheissenberger'
 authorName: 'Andreas Heissenberger'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/200095?v=4&s=140'
 -->
-# Receive an email, trigger a lambda function to process header
 
-This example shows how to receive an email header with SES, trigger a lambda function, process headers or accept or reject emails.
+# AWS SES receive an email, trigger a lambda function to process header.
 
-## Use-cases
+This example shows how to process receiving email header, and trigger a lambda function.
 
-- Postprocess of email header.
-- accept or reject emails
+## Use Cases
 
-## Setup
+- Serverless application development
 
-- [Create a SES verified Domain](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/receiving-email-getting-started-verify.html) but do not setup the "Rule Set"
-- if you change the region check if SES receiving exists in your region
-- if you change the function names you will need to update the normalized function name used in the resource section - e.g. processacceptreject => ProcessacceptrejectLambdaFunction
+## Prerequisites
 
-## Deploy
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-In order to deploy the example, simply run:
+## Installation
 
+Install dependencies:
+
+```bash
+npm install
+```
+
+Or using yarn:
+```bash
+yarn install
+```
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function processheader
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The output should look similar to:
-
-```
-Serverless: Packaging service...
-Serverless: Excluding development dependencies...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading artifacts...
-Serverless: Uploading service .zip file to S3 (2.69 KB)...
-Serverless: Validating template...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-........................
-Serverless: Stack update finished...
-Service Information
-service: aws-node-ses-receive-email-header
-stage: dev
-region: eu-west-1
-stack: aws-node-ses-receive-email-header-dev
-api keys:
-  None
-endpoints:
-  None
-functions:
-  processheader: aws-node-ses-receive-email-header-dev-processheader
-
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
 
-## Setup SNS Email Receiving Rule for process header
+### Deploy to specific stage/region
 
-1) Open the Amazon SES console at https://console.aws.amazon.com/ses/
-2) In the navigation pane, under Email Receiving, choose Rule Sets.
-3) Choose **Create a Receipt Rule**.
-4) On the Recipients page, choose **Next Step**. (Without a adding any recipients, Amazon SES applies this rule to all recipients)
-5) For **Add action**, choose **lambda**.
-6) For **Lambda function**, choose the lambda function with the name **aws-node-ses-receive-email-header-dev-processheader** you defined in `serverless.yml`
-6) **Invocation type** choose **Event**
-7) Choose **Next Step**
-8) On the **Rule Details** page, for **Rule name**, type **my-rule**. Select the check box next to **Enabled**, and then choose **Next Step**.
-9) On the **Review** page, choose **Create Rule**.
-
-## Setup SNS Email Receiving Rule for accept or reject emails
-
-Schritte 1-5 sind identisch dann:
-
-6) For **Lambda function**, choose the lambda function with the name **aws-node-ses-receive-email-header-dev-processacceptreject** you defined in `serverless.yml`
-6) **Invocation type** choose **RequestResponse** (Lambda function will be called synchronously to control mail flow)
-7) Choose **Next Step**
-8) On the **Rule Details** page, for **Rule name**, type **my-rule**. Select the check box next to **Enabled**, and then choose **Next Step**.
-9) On the **Review** page, choose **Create Rule**.
-
-
-
-## Usage
-
-Send a test email to the receipient.
-
-
-```
-serverless logs -t --function processheader
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
 ```
 
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
 ```
-START RequestId: eada06fc-c76a-11a8-bffd389a883292 Version: $LATEST
-<date> <RequestId>     { from: 'Tim Turbo <tim.turbo@domain.test>',
-  to: 'ses-in@domain.test',
-  subject: 'Testsubject',
-  date: 'Thu, 4 Oct 2018 01:33:06 +0200' }
-END RequestId: eada06fc-c76a-11a8-bffd389a883292
-REPORT RequestId: eada06fc-c76a-11a8-bffd389a883292  Duration: 5.62 ms       Billed Duration: 100 ms         Memory Size: 1024 MB    Max Memory Used: 19 MB
+
+### Usage Examples
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function processheader
 ```
+
+Tail logs in real-time:
+```bash
+serverless logs --function processheader --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

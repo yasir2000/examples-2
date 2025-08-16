@@ -10,96 +10,140 @@ authorLink: 'https://github.com/slate71'
 authorName: 'Lukas Andersen'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/2078561?v=4&s=140'
 -->
-# Serving Dynamic HTML via API Gateway Example
 
-This example illustrates how to hookup an API Gateway endpoint to a Lambda function to render HTML on a `GET` request.
+# AWS Serving Dynamic HTML via API Gateway example in NodeJS
 
-## Use-cases
+This example illustrates how to hookup an API Gateway endpoint to a Lambda function to render HTML on a GET request.
 
-- Landing pages for marketing activities
-- Single use dynamic webpages
+## Use Cases
 
-## How it works
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-Instead of returning the default `json` from a request, you can display custom dynamic HTML by setting the `Content-Type` header to `text/html`.
+## Prerequisites
 
-```js
-const response = {
-  statusCode: 200,
-  headers: {
-    'Content-Type': 'text/html',
-  },
-  body: html,
-};
-// callback will send HTML back
-callback(null, response);
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
+
+## Installation
+
+Install dependencies:
+
+```bash
+npm install
 ```
 
-## Deploy
+Or using yarn:
+```bash
+yarn install
+```
 
-In order to deploy the endpoint simply run
+## Local Development
 
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function landingPage
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The expected result should be similar to:
-
+Deploy a single function (faster for development):
 ```bash
-Serverless: Creating Stack...
-Serverless: Checking Stack create progress...
-.....
-Serverless: Stack create finished...
-Serverless: Packaging service...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading service .zip file to S3 (1.01 KB)...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-...........................
-Serverless: Stack update finished...
-
-Service Information
-service: serve-dynamic-html-via-http-endpoint
-stage: dev
-region: us-east-1
-api keys:
-  None
-endpoints:
-  GET - https://nzkl1kas89.execute-api.us-east-1.amazonaws.com/dev/landing-page
-functions:
-  serve-dynamic-html-via-http-endpoint-dev-landingPage: arn:aws:lambda:us-east-1:377024778620:function:serve-dynamic-html-via-http-endpoint-dev-landingPage
+serverless deploy function --function functionName
 ```
 
-## Usage
+### Deploy to specific stage/region
 
-You can now send an HTTP request directly to the endpoint using a tool like curl
-
+Deploy to a specific stage:
 ```bash
-curl https://nzkl1kas89.execute-api.us-east-1.amazonaws.com/dev/landing-page?name=Nik%20Graf
+serverless deploy --stage production
 ```
 
-The expected result should be similar to:
-
+Deploy to a specific region:
 ```bash
-<html>
-  <style>
-    h1 { color: #73757d; }
-  </style>
-  <body>
-    <h1>Landing Page</h1>
-    <p>Hey Nik Graf!</p>
-  </body>
-</html>
+serverless deploy --region eu-west-1
 ```
 
-Of course you can visit the URL in your browser and this is how it should look like:
+### Usage Examples
 
-![Screenshot without a name](https://cloud.githubusercontent.com/assets/223045/20668061/12c6db9a-b56d-11e6-911c-8396d545471a.png)
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
 
-To greet a specific person, provide the query parameter with the name of that person e.g. `?name=Nik%20Graf`. The response should now contain the provided name:
+### View logs
 
-![Screenshot with a name](https://cloud.githubusercontent.com/assets/223045/20668055/0758b4cc-b56d-11e6-80ce-3e137151311f.png)
+View function logs:
+```bash
+serverless logs --function landingPage
+```
 
-## Scaling
+Tail logs in real-time:
+```bash
+serverless logs --function landingPage --tail
+```
 
-By default, AWS Lambda limits the total concurrent executions across all functions within a given region to 100. The default limit is a safety limit that protects you from costs due to potential runaway or recursive functions during initial development and testing. To increase this limit above the default, follow the steps in [To request a limit increase for concurrent executions](http://docs.aws.amazon.com/lambda/latest/dg/concurrent-executions.html#increase-concurrent-executions-limit).
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

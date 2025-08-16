@@ -10,58 +10,147 @@ authorLink: 'https://github.com/t49tran'
 authorName: 'Duong Tran'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/2223362?v=4&s=140'
 -->
+
 # Simple AWS Transcribe example in NodeJS
 
-This example demonstrates how to setup a lambda function to transcribe your audio file (.wav format) into a text transcription. The lambda will be triggered whenever a new audio file is uploaded to S3 and the transcription (JSON format) will be saved to a S3 bucket.
+This example demonstrates how to use Serverless Framework with JavaScript on AWS.
 
 ## Use Cases
 
-- Transcribe your audio file (voice messages, phone recordings) to text using AWS Transcribe
+- File processing and transformation
+- Event-driven data processing
+- Serverless application development
 
-## Setup
+## Prerequisites
 
-- Edit `serverless.yml` and change the language code if you need to, at the moment: 
-`en-US | es-US | en-AU | fr-CA | en-UK`
-is supported
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-- Declare AWS region if you need to, beware that at the moment, AWS Transcribe is not supported for all regions.
+## Installation
 
-## Deploy
+Install dependencies:
 
-In order to deploy the you endpoint simply run
+```bash
+npm install
+```
 
+Or using yarn:
+```bash
+yarn install
+```
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function transcribe
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The expected result should be similar to:
-
+Deploy a single function (faster for development):
 ```bash
-Serverless: Packaging service...
-Serverless: Excluding development dependencies...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading artifacts...
-Serverless: Uploading service .zip file to S3 (1.71 KB)...
-Serverless: Validating template...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-........................
-Serverless: Stack update finished...
-Service Information
-service: aws-node-simple-transcribe-s3
-stage: dev
-region: us-east-1
-stack: aws-node-simple-transcribe-s3-dev
-api keys:
-  None
-endpoints:
-  None
-functions:
-  transcribe: aws-node-simple-transcribe-s3-dev-transcribe
+serverless deploy function --function functionName
 ```
 
-## Usage
+### Deploy to specific stage/region
 
-- Upload a audio file to your S3 audio bucket
-- A transcription job should be created in AWS Transcribe
-- The result (in JSON format) should then be found in the S3 transcription bucket
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+This function is triggered by S3 events. Upload a file to the configured bucket to trigger execution.
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function transcribe
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function transcribe --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `S3_AUDIO_BUCKET`: ${self:service}-${opt:stage, self:provider.stage}-records
+- `S3_TRANSCRIPTION_BUCKET`: ${self:service}-${opt:stage, self:provider.stage}-transcriptions
+- `LANGUAGE_CODE`: en-US
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

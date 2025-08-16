@@ -12,14 +12,125 @@ authorAvatar: 'https://avatars0.githubusercontent.com/u/16936753?v=4&s=140'
 
 # Go Serverless Examples
 
-A few example of AWS lambda functions written in GoLang.
+This example shows you how to setup auth in front of a AWS Lambda function
 
-Functions:
+## Use Cases
 
-- `hello-world`: Exactly what is says on the tin. Listening on a `/hello` path.
-- `auth`: An AWS API Gateway custom authorizer that sits in front of `hello-world`. It expects an auth bearer of `hello` as a header and is on the base `/` path. The auth header should be `Authorization: bearer hello`
-- `auth2` and `hello-world2`: The same as `auth` above except using auth contexts. Any name can be used as a bearer token, for example `Authorization: bearer Bob`. The response will then return `Hello, Bob!`
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-I hope to add to these examples over time, if you have ideas please feel free to raise issues or pull requests.
+## Prerequisites
 
-For more info on these example check out the [blog post](https://cloudnative.ly/lambdas-with-golang-a-technical-guide-6f381284897b)
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Go](https://golang.org/) (version 1.x)
+- Go modules enabled
+
+## Installation
+
+Install dependencies:
+
+```bash
+go mod tidy
+```
+
+Or if using dep (legacy):
+```bash
+dep ensure
+```
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function authorize
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function authorize
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function authorize --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

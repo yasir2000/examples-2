@@ -10,60 +10,140 @@ authorLink: 'https://github.com/billkidwell'
 authorName: 'Bill Kidwell'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/46457910?s=460&u=7c6d271ea7527f05e6c053cab571d32ffb3dbd38&v=4'
 -->
-# Simple Kinesis Example
 
-This example demonstrates how to setup a Kinesis producer and consumer to send and receive messages through a Kinesis Data Stream.
+# AWS Kinesis Data Streams Example (NodeJS & Typescript)
+
+Produce and Consume data on a Kinesis Data Stream with Typescript.
 
 ## Use Cases
-- Decouple message producers from message consumers.
-- This is one way to architect for scale and reliability.
-- Real-time processing of streaming data
 
-## Setup
-- sls deploy
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## Usage
-- To send a message to the producer, get the address from your sls deploy output.
+## Prerequisites
 
-```
-Serverless: Stack update finished...
-Service Information
-service: aws-node-typescript-kinesis
-stage: dev
-region: us-east-1
-stack: aws-node-typescript-kinesis-dev
-resources: 16
-api keys:
-  None
-endpoints:
-  POST - https://xxx.execute-api.us-east-1.amazonaws.com/dev/producer
-functions:
-  producer: aws-node-typescript-kinesis-dev-producer
-  consumer: aws-node-typescript-kinesis-dev-consumer
-layers:
-  None
-```
-- To print out the logs of the Kinesis consumer handler on the terminal
-  `sls logs -f consumer -t`
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-- send a HTTP POST request to the producer lambda
+## Installation
 
-```
-curl -d "{ 'key': 'employee', 'value': 'Bill' }" \
-https://xxx.execute-api.us-east-1.amazonaws.com/dev/producer
+Install dependencies:
+
+```bash
+npm install
 ```
 
-- You should see confirmation that the message was sent.  `{"message":"Message placed in the Event Stream!"}`
-
-- The logs from the consumer will be delayed several seconds.
-
-```
-INFO    Kinesis Message:
-          partition key: eb2da704-4972-4bd7-8c25-cce1decce95d
-          sequence number: 49608726715828497972227004620876254203171519877947064322
-          kinesis schema version: 1.0
-          data: { 'key': 'employee', 'value': 'Bill' }
+Or using yarn:
+```bash
+yarn install
 ```
 
-## Acknowledgements
-Adapted from Miguel Frazao's [SQS Standard example](https://github.com/serverless/examples/tree/master/aws-node-typescript-sqs-standard).
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function producer
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function producer
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function producer --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

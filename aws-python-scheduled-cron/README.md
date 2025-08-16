@@ -11,63 +11,122 @@ authorName: 'Rupak Ganguly'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/8188?v=4&s=140'
 -->
 
-# Serverless Framework Python Scheduled Cron on AWS
+# AWS Python Scheduled Cron example in Python
 
-This template demonstrates how to develop and deploy a simple cron-like service running on AWS Lambda using the Serverless Framework.
+This is an example of creating a function that runs as a cron job using the serverless 
 
-Detailed information about cron expressions in available in official [AWS docs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html#CronExpressions).
+## Use Cases
 
-## Usage
+- Scheduled tasks and cron jobs
+- Background processing
+- Serverless application development
 
-### Deployment
+## Prerequisites
 
-This example is made to work with the Serverless Framework dashboard, which includes advanced features such as CI/CD, monitoring, metrics, etc.
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Python](https://python.org/) (version 3.6 or higher)
+- pip package manager
 
-In order to deploy with dashboard, you need to first login with:
+## Installation
 
-```
-serverless login
-```
+Install dependencies:
 
-and then perform deployment with:
-
-```
-serverless deploy
-```
-
-After running deploy, you should see output similar to:
-
-```
-Deploying "aws-python-scheduled-cron" to stage "dev" (us-east-1)
-
-✔ Service deployed to stack aws-python-scheduled-cron-dev (146s)
-
-functions:
-  rateHandler: aws-python-scheduled-cron-dev-rateHandler (2.2 kB)
+```bash
+pip install -r requirements.txt
 ```
 
-There is no additional step required. Your defined schedules becomes active right away after deployment.
+## Local Development
 
-### Local invocation
+### Test individual functions
 
-In order to test out your functions locally, you can invoke them with the following command:
-
-```
+Test a function locally:
+```bash
 serverless invoke local --function rateHandler
 ```
 
-After invocation, you should see output similar to:
+## Deployment
 
-```
-INFO:handler:Your cron function ran at 15:02:43.203145
-```
+### Deploy to cloud
 
-### Bundling dependencies
-
-In case you would like to include 3rd party dependencies, you will need to use a plugin called `serverless-python-requirements`. You can set it up by running the following command:
-
-```
-serverless plugin install -n serverless-python-requirements
+Deploy the service:
+```bash
+serverless deploy
 ```
 
-Running the above will automatically add `serverless-python-requirements` to `plugins` section in your `serverless.yml` file and add it as a `devDependency` to `package.json` file. The `package.json` file will be automatically created if it doesn't exist beforehand. Now you will be able to add your dependencies to `requirements.txt` file (`Pipfile` and `pyproject.toml` is also supported but requires additional configuration) and they will be automatically injected to Lambda package during build process. For more details about the plugin's configuration, please refer to [official documentation](https://github.com/UnitedIncome/serverless-python-requirements).
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+This function runs on a schedule. Check CloudWatch logs for execution:
+```bash
+serverless logs --function functionName
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function rateHandler
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function rateHandler --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

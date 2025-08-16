@@ -10,47 +10,105 @@ authorLink: 'https://github.com/andresmgot'
 authorName: Andres
 authorAvatar: 'https://avatars0.githubusercontent.com/u/4025665?v=4&s=140'
 -->
-# Serverless Boilerplate - Kubeless - Python
 
-Make sure `kubeless` and `serverless` are installed. See the respective installation guides:
-* [Kubeless](https://github.com/kubeless/kubeless/blob/master/README.md#usage)
-* [Serverless](https://github.com/serverless/serverless#quick-start)
+# Kubeless Serverless Simple scheduled function example in Python
 
-Please see the [this guide for more information](https://github.com/serverless/serverless-kubeless).
+This example demonstrates a simple sexample in Python for a scheduled function.
 
-## 1. Install Service Dependencies
-Run `npm install` in this directory to download the modules from `package.json`.
+## Use Cases
 
-## 2. Setting the schedule
-You can check that we are setting the function schedule in the `serverless.yml` file. This schedule should follow the Cron notation. In this example we are setting it to `* * * * *` for the function to be executed every minute.
+- Scheduled tasks and cron jobs
+- Background processing
+- Serverless application development
 
-## 3. Deploy
-Run `serverless deploy` in order to deploy the function defined in `serverless.yml`
+## Prerequisites
 
-```bash
-$ serverless deploy
-Serverless: Packaging service...
-Serverless: Deploying function clock...
-Serverless: Function clock successfully deployed
-```
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Python](https://python.org/) (version 3.6 or higher)
+- pip package manager
 
-## 3. Check the function logs
-Run `serverless logs --function clock`
+## Installation
 
-In your terminal window you should see the consecutive executions of the scheduled function:
+Install dependencies:
 
 ```bash
-$ sls logs -f clock
-Bottle v0.12.13 server starting up (using CherryPyServer())...
-Listening on http://0.0.0.0:8080/
-Hit Ctrl-C to quit.
-172.17.0.1 - - [26/Sep/2017:10:25:27 +0000] "GET /healthz HTTP/1.1" 200 2 "" "Go-http-client/1.1" 0/153
-172.17.0.1 - - [26/Sep/2017:10:25:41 +0000] "GET /healthz HTTP/1.1" 200 2 "" "Go-http-client/1.1" 0/96
-10:26
-172.17.0.10 - - [26/Sep/2017:10:26:04 +0000] "GET / HTTP/1.1" 200 5 "" "Wget" 0/1647
-172.17.0.1 - - [26/Sep/2017:10:26:11 +0000] "GET /healthz HTTP/1.1" 200 2 "" "Go-http-client/1.1" 0/95
-172.17.0.1 - - [26/Sep/2017:10:26:41 +0000] "GET /healthz HTTP/1.1" 200 2 "" "Go-http-client/1.1" 0/100
-10:27
+pip install -r requirements.txt
 ```
 
-**For more information on the Serverless Kubeless plugin, please see the project repository: [https://github.com/serverless/serverless-kubeless](https://github.com/serverless/serverless-kubeless).**
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function clock
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Usage Examples
+
+This function runs on a schedule. Check CloudWatch logs for execution:
+```bash
+serverless logs --function functionName
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function clock
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function clock --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [KUBELESS Provider Documentation](https://www.serverless.com/framework/docs/providers/kubeless/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

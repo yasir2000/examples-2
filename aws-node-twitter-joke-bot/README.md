@@ -10,41 +10,144 @@ authorLink: 'https://github.com/Fixy250185'
 authorName: 'Craig Sweaton'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/26969518?v=4&s=140'
 -->
+
 # Joke Twitter Bot
 
-## Description
-This is a Twitter bot that will periodically tweet out a joke obtained from a joke API [https://icanhazdadjoke.com/](https://icanhazdadjoke.com/)
+This example demonstrates how to use Serverless Framework with JavaScript on AWS.
+
+## Use Cases
+
+- Scheduled tasks and cron jobs
+- Background processing
+- Serverless application development
+
+## Prerequisites
+
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
 ## Installation
-Run `npm i` to install dependencies
 
-## Setup
-An environment file is required to contain the secret keys for the Twitter API and the joke API's URL. The naming convention for this file is `[STAGE].env.json`, for example `dev.env.json`.
+Install dependencies:
 
-This is the env file that should be placed in the project root.
-```json
-{
-    "JOKES_API_URL":"https://icanhazdadjoke.com/",
-    "TWITTER_CONSUMER_KEY": "YOUR KEY GOES HERE",
-    "TWITTER_CONSUMER_SECRET": "YOUR KEY GOES HERE",
-    "TWITTER_ACCESS_TOKEN_KEY": "YOUR KEY GOES HERE",
-    "TWITTER_ACCESS_TOKEN_SECRET": "YOUR KEY GOES HERE"
-}
+```bash
+npm install
 ```
 
-## Testing
-The bot can be invoked manually during development with the following command
+Or using yarn:
+```bash
+yarn install
 ```
-sls invoke local -f bot
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function bot
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
 ```
 
 ## Deployment
-- Both the `STAGE` and `REGION` options can be used with this bot. If left out the bot will default to `dev` stage and `eu-west-1` region.
 
-Deploy command
-```
-sls deploy --stage dev --region eu-west-1
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
 ```
 
-## Notes
-The API request in `helpers/jokes.js` sets a custom User-Agent header to identify users to the joke API owners. Please customise this to your library name.
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+This function runs on a schedule. Check CloudWatch logs for execution:
+```bash
+serverless logs --function functionName
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function bot
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function bot --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

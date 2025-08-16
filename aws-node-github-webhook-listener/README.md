@@ -10,108 +10,148 @@ authorLink: 'https://github.com/adambrgmn'
 authorName: 'Adam Bergman'
 authorAvatar: 'https://avatars1.githubusercontent.com/u/13746650?v=4&s=140'
 -->
-# Serverless Github webhook listener
+
+# AWS Serverless Github Webhook Listener example in NodeJS
 
 This service will listen to github webhooks fired by a given repository.
 
 ## Use Cases
 
-* Custom github notifications
-* Automatically tagging github issues
-* Pinging slack on new Pull requests
-* Welcoming new stargazers
-* etc.
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## How it works
+## Prerequisites
 
-```
-┌───────────────┐               ┌───────────┐
-│               │               │           │
-│  Github repo  │               │   Github  │
-│   activity    │────Trigger───▶│  Webhook  │
-│               │               │           │
-└───────────────┘               └───────────┘
-                                      │
-                     ┌────POST────────┘
-                     │
-          ┌──────────▼─────────┐
-          │ ┌────────────────┐ │
-          │ │  API Gateway   │ │
-          │ │    Endpoint    │ │
-          │ └────────────────┘ │
-          └─────────┬──────────┘
-                    │
-                    │
-         ┌──────────▼──────────┐
-         │ ┌────────────────┐  │
-         │ │                │  │
-         │ │     Lambda     │  │
-         │ │    Function    │  │
-         │ │                │  │
-         │ └────────────────┘  │
-         └─────────────────────┘
-                    │
-                    │
-                    ▼
-         ┌────────────────────┐
-         │                    │
-         │      Do stuff      │
-         │                    │
-         └────────────────────┘
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
+
+## Installation
+
+Install dependencies:
+
+```bash
+npm install
 ```
 
-## Setup
+Or using yarn:
+```bash
+yarn install
+```
 
-1. Set your webhook secret token in `serverless.yml` by replacing `REPLACE-WITH-YOUR-SECRET-HERE` in the environment variables `GITHUB_WEBHOOK_SECRET`.
+## Local Development
 
-  ```yml
-  provider:
-    name: aws
-    runtime: nodejs12.x
-    environment:
-      GITHUB_WEBHOOK_SECRET: REPLACE-WITH-YOUR-SECRET-HERE
-  ```
+### Test individual functions
 
-2. Deploy the service
+Test a function locally:
+```bash
+serverless invoke local --function githubWebhookListener
+```
 
-  ```yaml
-  serverless deploy
-  ```
+### Run with local development server
 
-  After the deploy has finished you should see something like:
-  ```bash
-  Service Information
-  service: github-webhook-listener
-  stage: dev
-  region: us-east-1
-  api keys:
-    None
-  endpoints:
-    POST - https://abcdefg.execute-api.us-east-1.amazonaws.com/dev/webhook
-  functions:
-    github-webhook-.....github-webhook-listener-dev-githubWebhookListener
-  ```
+Start local development server:
+```bash
+serverless offline
+```
 
-3. Configure your webhook in your github repository settings. [Setting up a Webhook](https://developer.github.com/webhooks/creating/#setting-up-a-webhook)
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
 
-  **(1.)** Plugin your API POST endpoint. (`https://abcdefg.execute-api.us-east-1.amazonaws.com/dev/webhook` in this example). Run `sls info` to grab your endpoint if you don't have it handy.
+## Deployment
 
-  **(2.)** Plugin your secret from `GITHUB_WEBHOOK_SECRET` environment variable
+### Deploy to cloud
 
-  **(3.)** Choose the types of events you want the github webhook to fire on
+Deploy the service:
+```bash
+serverless deploy
+```
 
-  ![webhook-steps](https://cloud.githubusercontent.com/assets/532272/21461773/db7cecd2-c911e6-936bbf4661fe14.jpg)
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
 
+### Deploy to specific stage/region
 
-4. Manually trigger/test the webhook from settings or do something in your github repo to trigger a webhook.
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
 
-  You can tail the logs of the lambda function with the below command to see it running.
-  ```bash
-  serverless logs -f githubWebhookListener -t
-  ```
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
 
-  You should see the event from github in the lambda functions logs.
+### Usage Examples
 
-5. Use your imagination and do whatever you want with your new github webhook listener! 🎉
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
 
-Let us know if you come up with a cool use case for this service =)
+### View logs
+
+View function logs:
+```bash
+serverless logs --function githubWebhookListener
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function githubWebhookListener --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `GITHUB_WEBHOOK_SECRET`: REPLACE-WITH-YOUR-SECRET-HERE
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

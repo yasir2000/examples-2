@@ -10,42 +10,122 @@ authorName: 'NiJia'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/418548?v=4&s=140'
 -->
 
-# AWS-python-line-echo-bot
+# Simple LINE bot
 
-This is a simple echo bot on LINE bot. (python)
+This is a simple echo bot on LINE bot.
 
-## Before you start
+## Use Cases
 
-1. LINE developer account
-2. [LINE Messaging API](https://developers.line.biz/en/docs/messaging-api/getting-started/)
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## Get Started
+## Prerequisites
 
-1.  Install serverless via npm
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Python](https://python.org/) (version 3.6 or higher)
+- pip package manager
 
-```bash=
-$ npm install -g serverless
+## Installation
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
 ```
 
-2. Setup your AWS ceritficate
+## Local Development
 
-```bash=
-$ export AWS_ACCESS_KEY_ID=<your-key-here>
-$ export AWS_SECRET_ACCESS_KEY=<your-secret-key-here>
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function line_bot
 ```
 
-3. Setup you line bot secret & key
+## Deployment
 
-```python=
-line_bot_api = LineBotApi('YOUR_CHANNEL_ACCESS_TOKEN')
-handler = WebhookHandler('YOUR_CHANNEL_SECRET')
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
 ```
 
-4. Deploy the webhook function
-
-```bash=
-$ npm install
-$ serverless deploy
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
 
-![Echo bot](https://i.imgur.com/Tn1XS13.png)
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function line_bot
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function line_bot --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

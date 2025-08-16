@@ -9,137 +9,131 @@ authorLink: 'https://github.com/godfreyhobbs'
 authorName: 'Godfrey Hobbs'
 authorAvatar: 'https://avatars1.githubusercontent.com/u/8434141?v=4&s=140'
 -->
-# Serverless HTTP API
 
-This example demonstrates how to setup an HTTP API allowing you to create, list, get, update and delete Todos. DynamoDB is used to store the data. This is just an example and of course you could use any data storage as a backend.
+# AWS Serverless HTTP API with DynamoDB store example in Python
 
-## Structure
+This example demonstrates how to setup an HTTP API allowing you to create, list, get, update and delete Todos. DynamoDB is used to store the data.
 
-This service has a separate directory for all the todo operations. For each operation exactly one file exists e.g. `todos/delete.py`. In each of these files there is exactly one function defined.
+## Use Cases
 
-The idea behind the `todos` directory is that in case you want to create a service containing multiple resources e.g. users, notes, comments you could do so in the same service. While this is certainly possible you might consider creating a separate service for each resource. It depends on the use-case and your preference.
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## Use-cases
+## Prerequisites
 
-- API for a Web Application
-- API for a Mobile Application
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Python](https://python.org/) (version 3.6 or higher)
+- pip package manager
 
-## Setup
+## Installation
+
+Install dependencies:
 
 ```bash
-npm install -g serverless
+pip install -r requirements.txt
 ```
 
-## Deploy
+## Local Development
 
-In order to deploy the endpoint simply run
+### Test individual functions
 
+Test a function locally:
+```bash
+serverless invoke local --function create
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The expected result should be similar to:
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function create
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function create --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `DYNAMODB_TABLE`: ${self:service}-${sls:stage}
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-Serverless: Packaging service…
-Serverless: Uploading CloudFormation file to S3…
-Serverless: Uploading service .zip file to S3…
-Serverless: Updating Stack…
-Serverless: Checking Stack update progress…
-Serverless: Stack update finished…
-
-Service Information
-service: serverless-http-api-dynamodb
-stage: dev
-region: us-east-1
-api keys:
-  None
-endpoints:
-  POST - https://45wf34z5yf.execute-api.us-east-1.amazonaws.com/todos
-  GET - https://45wf34z5yf.execute-api.us-east-1.amazonaws.com/todos
-  GET - https://45wf34z5yf.execute-api.us-east-1.amazonaws.com/todos/{id}
-  PUT - https://45wf34z5yf.execute-api.us-east-1.amazonaws.com/todos/{id}
-  DELETE - https://45wf34z5yf.execute-api.us-east-1.amazonaws.com/todos/{id}
-functions:
-  update: serverless-http-api-dynamodb-dev-update
-  get: serverless-http-api-dynamodb-dev-get
-  list: serverless-http-api-dynamodb-dev-list
-  create: serverless-http-api-dynamodb-dev-create
-  delete: serverless-http-api-dynamodb-dev-delete
+serverless remove
 ```
 
-## Usage
-
-You can create, retrieve, update, or delete todos with the following commands:
-
-### Create a Todo
-
+Remove from specific stage:
 ```bash
-curl -X POST https://XXXXXXX.execute-api.us-east-1.amazonaws.com/todos --data '{ "text": "Learn Serverless" }' -H "Content-Type: application/json"
+serverless remove --stage production
 ```
 
-No output
+## Troubleshooting
 
-### List all Todos
+### Common Issues
 
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
 ```bash
-curl https://XXXXXXX.execute-api.us-east-1.amazonaws.com/todos
+SLS_DEBUG=* serverless deploy
 ```
 
-Example output:
-```bash
-[{"text":"Deploy my first service","id":"ac90feaa11e6-9ede-afdfa051af86","checked":true,"updatedAt":1479139961304},{"text":"Learn Serverless","id":"206793aa11e6-9ede-afdfa051af86","createdAt":1479139943241,"checked":false,"updatedAt":1479139943241}]%
-```
+### AWS Specific Issues
 
-### Get one Todo
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
 
-```bash
-# Replace the <id> part with a real id from your todos table
-curl https://XXXXXXX.execute-api.us-east-1.amazonaws.com/todos/<id>
-```
+## Additional Resources
 
-Example Result:
-```bash
-{"text":"Learn Serverless","id":"ee6490d0-aa11e6-9ede-afdfa051af86","createdAt":1479138570824,"checked":false,"updatedAt":1479138570824}%
-```
-
-### Update a Todo
-
-```bash
-# Replace the <id> part with a real id from your todos table
-curl -X PUT https://XXXXXXX.execute-api.us-east-1.amazonaws.com/todos/<id> --data '{ "text": "Learn Serverless", "checked": true }' -H "Content-Type: application/json"
-```
-
-Example Result:
-```bash
-{"text":"Learn Serverless","id":"ee6490d0-aa11e6-9ede-afdfa051af86","createdAt":1479138570824,"checked":true,"updatedAt":1479138570824}%
-```
-
-### Delete a Todo
-
-```bash
-# Replace the <id> part with a real id from your todos table
-curl -X DELETE https://XXXXXXX.execute-api.us-east-1.amazonaws.com/todos/<id>
-```
-
-No output
-
-## Scaling
-
-### AWS Lambda
-
-By default, AWS Lambda limits the total concurrent executions across all functions within a given region to 1000. The default limit is a safety limit that protects you from costs due to potential runaway or recursive functions during initial development and testing. To increase this limit above the default, follow the steps in [To request a limit increase for concurrent executions](http://docs.aws.amazon.com/lambda/latest/dg/concurrent-executions.html#increase-concurrent-executions-limit).
-
-### DynamoDB
-
-When you create a table, you specify how much provisioned throughput capacity you want to reserve for reads and writes. DynamoDB will reserve the necessary resources to meet your throughput needs while ensuring consistent, low-latency performance. You can change the provisioned throughput and increasing or decreasing capacity as needed.
-
-This is can be done via settings in the `serverless.yml`.
-
-```yaml
-  ProvisionedThroughput:
-    ReadCapacityUnits: 1
-    WriteCapacityUnits: 1
-```
-
-In case you expect a lot of traffic fluctuation we recommend to checkout this guide on how to auto scale DynamoDB [https://aws.amazon.com/blogs/aws/auto-scale-dynamodb-with-dynamic-dynamodb/](https://aws.amazon.com/blogs/aws/auto-scale-dynamodb-with-dynamic-dynamodb/)
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

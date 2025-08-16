@@ -10,41 +10,139 @@ authorName: 'Anna Spysz'
 authorAvatar: 'https://avatars3.githubusercontent.com/u/5382821?v=4&s=140'
 -->
 
-# The Serverless Gong! 🔔
+# The Serverless Gong
 
-A serverless gong with GitHub and Slack webhooks - made for the [No Server November Challenge](https://serverless.com/blog/no-server-november-challenge/).
+A serverless gong with GitHub and Slack webhooks
 
-When a selected repository in GitHub has a release event, a chosen Slack channel is messaged with a gong! Your final result will look like this:
+## Use Cases
 
-![screenshot](https://www.stackery.io/blog/assets/images/posts/serverless-gong/gong6.png)
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## Instructions
+## Prerequisites
 
-* Read the [Serverless Webhooks Tutorial](https://docs.stackery.io/docs/tutorials/serverless-webhooks/) to get started
-* Read the [blog post on the Serverless Gong](https://www.stackery.io/blog/serverless-gong/) for more on this project and detailed instructions with screenshots
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-## Setup
+## Installation
 
-#### Deploy this to your AWS account using Serverless Framework
+Install dependencies:
 
-If you have the Serverless CLI set up, you can simply enter `serverless deploy` to deploy!
-
-#### Deploy this to your AWS account using Stackery
-
-You can create and deploy this application to your own AWS account using the following two Stackery CLI commands:
-
-`stackery create` will initialize a new repo in your GitHub account, initializing it with the contents of the referenced template repository.
-
-```
-stackery create --stack-name 'serverless-gong' \
---git-provider 'github' \
---template-git-url 'https://github.com/stackery/serverless-gong' 
+```bash
+npm install
 ```
 
-`stackery deploy` will deploy the newly created stack into your AWS account.
+Or using yarn:
+```bash
+yarn install
+```
 
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function handleGong
 ```
-stackery deploy --stack-name 'serverless-gong' \
---env-name 'development' \
---git-ref 'master'
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
 ```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function handleGong
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function handleGong --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

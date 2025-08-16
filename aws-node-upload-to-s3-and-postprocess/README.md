@@ -10,94 +10,141 @@ authorLink: 'https://github.com/walgarch'
 authorName: walgarch
 authorAvatar: 'https://avatars1.githubusercontent.com/u/32451330?v=4&s=140'
 -->
-# Upload a file to S3 to trigger a lambda function
 
-This example shows how to upload a file to S3 using a HTML form, and have S3
-trigger a lambda function.
+# AWS Upload a file to S3 to trigger a Lambda function example in NodeJS
 
-## Use-cases
+This example shows how to upload a file to S3 using a HTML form, and have S3 trigger a lambda function.
 
-- Postprocess files uploaded to an S3 bucket.
+## Use Cases
 
-## Setup
+- File processing and transformation
+- Event-driven data processing
+- Serverless application development
 
-- Edit `serverless.yml` and choose a unique S3 bucket name.
-- Edit `generate-form.js` and fill in your `aws_access_key_id`,
-  `aws_secret_access_key` and `bucket_name`.
-- Run `yarn install` to install crypto-js dependency for `generate-form.js`.
-- Generate the HTML form:
+## Prerequisites
 
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
+
+## Installation
+
+Install dependencies:
 
 ```bash
-yarn install
-node generate-form.js
+npm install
 ```
 
-## Deploy
+Or using yarn:
+```bash
+yarn install
+```
 
-In order to deploy the example, simply run:
+## Local Development
 
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function postprocess
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The output should look similar to:
-
+Deploy a single function (faster for development):
 ```bash
-Serverless: Creating Stack...
-Serverless: Checking Stack create progress...
-.....
-Serverless: Stack create finished...
-Serverless: Packaging service...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading service .zip file to S3 (3.85 MB)...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-........................
-Serverless: Stack update finished...
-Service Information
-service: upload-to-s3-and-postprocess
-stage: dev
-region: us-east-1
-api keys:
-  None
-endpoints:
-  None
-functions:
-  upload-to-s3-and-postprocess-dev-postprocess
-
+serverless deploy function --function functionName
 ```
 
-## Usage
+### Deploy to specific stage/region
 
-Open the generated `frontend/index.html` in your browser, or run:
-
+Deploy to a specific stage:
 ```bash
-xdg-open frontend/index.html
+serverless deploy --stage production
 ```
 
-Select a PNG image smaller than 1Mb, and click "Upload File to S3".
-
-You should get an XML response similar to:
-
-```xml
-<PostResponse>
-  <Location>https://serverless-fetch-file-and-store-in-s3.s3.amazonaws.com/uploads%2Fimage.png</Location>
-  <Bucket>serverless-fetch-file-and-store-in-s3</Bucket>
-  <Key>uploads/image.png</Key>
-  <ETag>"08c03c6a24e5058b9f3556981a23b1d7"</ETag>
-</PostResponse>
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
 ```
 
-After a while, the postprocess function gets triggered by an S3 event:
+### Usage Examples
 
+This function is triggered by S3 events. Upload a file to the configured bucket to trigger execution.
+
+### View logs
+
+View function logs:
 ```bash
 serverless logs --function postprocess
 ```
 
+Tail logs in real-time:
+```bash
+serverless logs --function postprocess --tail
 ```
-START RequestId: e2deccf2a0-11e6-b6e3fbcfad7d8c Version: $LATEST
-2014 12:32:30.350 (+02:00)	e2deccf2a0-11e6-b6e3fbcfad7d8c	New .png object has been created: uploads/image.png (23975 bytes)
-END RequestId: e2deccf2a0-11e6-b6e3fbcfad7d8c
-REPORT RequestId: e2deccf2a0-11e6-b6e3fbcfad7d8c	Duration: 2.84 ms	Billed Duration: 100 msMemory Size: 1024 MB	Max Memory Used: 29 MB
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
 ```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

@@ -11,62 +11,100 @@ authorName: 'Jonee Ryan Ty'
 authorAvatar:
 -->
 
-# Serverless Boilerplate - OpenWhisk - Rust
+# OpenWhisk Serverless Boilerplate example in Rust
 
-(This example is largely based on the openwhisk-go-simple by James Thomas but adapted for Rust)
+This example shows a Serverless boilerplate in Rust.
 
-Make sure `serverless` is installed. [See installation guide](https://serverless.com/framework/docs/providers/openwhisk/guide/installation/).
+## Use Cases
 
-You will also need to set up your OpenWhisk account credentials using environment variables or a configuration file. Please see the [this guide for more information](https://serverless.com/framework/docs/providers/openwhisk/guide/credentials/).
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## 1. Install Project Dependencies
-`npm install` in this directory to download the modules from `package.json`.
+## Prerequisites
 
-## 2. Compile Rust Binary (Statically)
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
 
-```
-$ cargo build --release --target x86_64-unknown-linux-musl
-```
+## Installation
 
-## 3. Deploy
-`serverless deploy` or `sls deploy`. `sls` is shorthand for the Serverless CLI command
+Install dependencies:
 
-```
-Serverless: Packaging service...
-Serverless: Excluding development dependencies...
-Serverless: Compiling Functions...
-Serverless: Compiling Packages...
-Serverless: Compiling API Gateway definitions...
-Serverless: Compiling Rules...
-Serverless: Compiling Triggers & Feeds...
-Serverless: Compiling Service Bindings...
-Serverless: Deploying Functions...
-Serverless: Deploying API Gateway definitions...
-Serverless: Deployment successful!
+# No additional installation steps required
 
+## Local Development
 
-Service Information
-platform:	us-south.functions.cloud.ibm.com
-namespace:	_
-service:	rust-service
+### Test individual functions
 
-actions:
-rust-service-dev-test_test
+Test a function locally:
+```bash
+serverless invoke local --function test_test
 ```
 
-## 4. Invoke deployed function
-`serverless invoke --function test_test` or `serverless invoke -f test_test`
+## Deployment
 
-`-f` is shorthand for `--function`
+### Deploy to cloud
 
-In your terminal window you should see the response from Apache OpenWhisk
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function test_test
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function test_test --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-$ serverless invoke -f test_test
-{
-    "message": "Serverless Rust Hello"
-}
-
+serverless remove
 ```
 
-**For more information on the Serverless OpenWhisk plugin, please see the project repository: [https://serverless.com/framework/docs/providers/openwhisk/guide/credentials/](https://serverless.com/framework/docs/providers/openwhisk/guide/credentials/).**
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [OPENWHISK Provider Documentation](https://www.serverless.com/framework/docs/providers/openwhisk/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

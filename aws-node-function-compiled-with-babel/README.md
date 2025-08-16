@@ -10,73 +10,137 @@ authorLink: 'https://github.com/rupakg'
 authorName: 'Rupak Ganguly'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/8188?v=4&s=140'
 -->
-# Function compiled with Babel
 
-This example demonstrates how to compile your JavaScript code with Babel. In order to do so the `serverless-babel-plugin` is leveraged.
+# AWS Function compiled with Babel example in NodeJS
+
+This example demonstrates how to compile your JavaScript code with Babel. In order to do so the 
 
 ## Use Cases
 
-- Using the latest JavaScript language features without waiting for AWS to provide new Node environments.
+- Serverless application development
 
-## Setup
+## Prerequisites
+
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
+
+## Installation
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-## Deploy
+Or using yarn:
+```bash
+yarn install
+```
 
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function hello
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
+Deploy a single function (faster for development):
 ```bash
-Serverless: Deprecation Notice: Starting with the next update, we will drop support for Lambda to implicitly create LogGroups. Please remove your log groups and set "provider.cfLogs: true", for CloudFormation to explicitly create them for you.
-Serverless: Packaging service…
-Serverless: Babel compilation:
-tmpBabelDirectory/createResponse.js -> tmpBabelDirectory/createResponse.js
-tmpBabelDirectory/handler.js -> tmpBabelDirectory/handler.js
-
-Serverless: Packaging service with compiled files...
-Serverless: Uploading CloudFormation file to S3…
-Serverless: Uploading service .zip file to S3…
-Serverless: Updating Stack…
-Serverless: Checking Stack update progress…
-............
-Serverless: Stack update finished…
-
-Service Information
-service: function-compiled-with-babel
-stage: dev
-region: us-east-1
-api keys:
-  None
-endpoints:
-  None
-functions:
-  function-compiled-with-babel-dev-hello: arn:aws:lambda:us-east-1:377024778620:function:function-compiled-with-babel-dev-hello
+serverless deploy function --function functionName
 ```
 
-## Usage
+### Deploy to specific stage/region
 
-You can now invoke the Lambda directly and even see the resulting log via
-
+Deploy to a specific stage:
 ```bash
-serverless invoke --function hello --log
+serverless deploy --stage production
 ```
 
-The expected result should be similar to:
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function hello
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function hello --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-{
-    "statusCode": 200,
-    "body": {
-        "message": "Success!"
-    }
-}
---------------------------------------------------------------------
-START RequestId: 4388eeaffe-11e6-9e1bde31ed2e43 Version: $LATEST
-2021 16:22:07.748 (+01:00)	4388eeaffe-11e6-9e1bde31ed2e43	{ response: { statusCode: 200, body: { message: 'Success!' } } }
-END RequestId: 4388eeaffe-11e6-9e1bde31ed2e43
-REPORT RequestId: 4388eeaffe-11e6-9e1bde31ed2e43	Duration: 23.13 ms	Billed Duration: 100 ms 	Memory Size: 1024 MB	Max Memory Used: 17 MB
+serverless remove
 ```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

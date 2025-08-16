@@ -12,104 +12,85 @@ authorAvatar: 'https://avatars0.githubusercontent.com/u/7476973?v=4&s=140'
 
 # Example – Serverless Email Sign-Up Form
 
-This demo application helps you test Serverless Framework Enterprise's main features:
+This example demonstrates how to deploy a Fullstack serverless application
 
-* **Insights** - Monitoring, metrics and alerts for your functions.
-* **Safeguards** - Best practice policies that run before you perform a deployment.
-* **Secrets** - Store sensitive credentials in the Serverless Enterprise Dashboard and reference them in your Serverless Framework Project.
+## Use Cases
 
-![Serverless Framework Enterprise Email Sign-Up Form Example](https://s3.amazonaws.com/assets.sales.serverless/github/enterprise-examples/email_form_preview.gif)
+- Serverless application development
 
-## Installation
+## Prerequisites
 
-#### Clone this repository
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
 
-```shell
-$ git clone https://github.com/serverless/enterprise.git
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function functionName
 ```
 
-#### Install Front-End & Back-End Dependencies
+## Deployment
 
-Navigate into this example project and install dependencies on the frontend and backend.
+### Deploy to cloud
 
-```shell
-# location - enterprise/examples/email-signup-form/frontend
-$ npm i
+Deploy the service:
+```bash
+serverless deploy
 ```
 
-```shell
-# location - enterprise/examples/email-signup-form/backend
-$ npm i
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
 
-#### Create a Tenant and Application in Serverless Framework Enterprise
+### Usage Examples
 
-The Serverless Enterprise Plugin adds a `login` command to the Serverless Framework, use it like this to log you in:
+### View logs
 
-```shell
-# location - enterprise/backend
-$ serverless login
+View function logs:
+```bash
+serverless logs --function functionName
 ```
 
-Make sure to follow the prompts and create your Tenant (it's like a Github Org) and Application.
-
-#### Add the Tenant and Application to this project's `serverless.yml`
-
-![App and Tenant](https://s3.amazonaws.com/assets.sales.serverless/github/enterprise-examples/email_form_appandtenant.png)
-
-#### Deploy the back-end
-
-```shell
-# location - enterprise/backend
-$ serverless deploy
+Tail logs in real-time:
+```bash
+serverless logs --function functionName --tail
 ```
 
-#### Run the front-end
+## Cleanup
 
-```shell
-# location - enterprise/backend
-$ npm run start
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
 ```
 
-#### Add the back-end URL in the front-end
-
-The front-end form is not directed at the API endpoint out of the box.  You must copy the POST URL that is returned on `serverless deploy` of the `backend` into the front-end.
-
-The URL should resemble this.
-
-```
-https://bpcn36m16a.execute-api.us-east-1.amazonaws.com/dev/submit
+Remove from specific stage:
+```bash
+serverless remove --stage production
 ```
 
-In the front-end, click "Demo Utilities" and paste this URL into the `FORM API` field.  The form should now work, as well as the testing features in the Utilites panel.
+## Troubleshooting
 
+### Common Issues
 
-## Testing Serverless Insights
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
 
-The user interface of this example application has a few utilities you can use to test out Serverless Framework Enterprise.
+### Debug Mode
 
-Click on "Demo Utilities" in the top right.  A side panel will expand which you can use to invoke the example application's Function several times, to fill Serverless Framework Enterprise with invocation data.
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
 
-You can also use the panel to generate a random Function code error that will appear in Serverless Framework Enterprise.
+## Additional Resources
 
-Read more about [Insights here](https://github.com/serverless/enterprise/blob/master/docs/insights.md).
-
-## Testing Serverless Secrets
-
-The goal of our Secrets feature is to support storing and using any generic secret as a [Serverless Variable](https://serverless.com/framework/docs/providers/aws/guide/variables/).  This will be supported in upcoming weeks.
-
-What Secrets supports now is creating a specific type of secret: AWS Access Keys.
-
-You can use Secrets to reference temporary AWS Access Keys that last for 1 hour, used for the purpose of deploying your Serverless Framework project to the underlying AWS account.
-
-Since these are temporary credentials, they mitigate the risk of developers leaving long-term credentials anywhere (e.g. Github) and are perfect for CI/CD.
-
-Read more about [Secrets here](https://github.com/serverless/enterprise/blob/master/docs/secrets.md).
-
-## Testing Serverless Safeguards
-
-The goal of our Safeguards feature is to be alike a linter for serverless architectures.  Safeguards are best practices and organizational policies that are enforced upon deployment.  When a deployment happens, Framework Enterprise scans your `serverless.yml` and CloudFormation file before deployment and looks for issues.
-
-Safeguards are immediately applied, out-of-the-box, when you add the Serverless Enterprise Plugin.
-
-Read more about [Safeguards here](https://github.com/serverless/enterprise/blob/master/docs/safeguards.md).
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [UNKNOWN Provider Documentation](https://www.serverless.com/framework/docs/providers/unknown/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

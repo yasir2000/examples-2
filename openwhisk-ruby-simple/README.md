@@ -10,52 +10,98 @@ authorLink: 'https://github.com/jthomas'
 authorName: 'James Thomas'
 authorAvatar: 'https://avatars2.githubusercontent.com/u/2322?v=4&s=140'
 -->
+
 # Serverless Boilerplate - OpenWhisk - Ruby
 
-Make sure `serverless` is installed. [See installation guide](https://serverless.com/framework/docs/providers/openwhisk/guide/installation/).
+This example demonstrates how to use Serverless Framework with Ruby on OPENWHISK.
 
-You will also need to set up your OpenWhisk account credentials using environment variables or a configuration file. Please see the [this guide for more information](https://serverless.com/framework/docs/providers/openwhisk/guide/credentials/).
+## Use Cases
 
-## 1. Install Project Dependencies
-`npm install` in this directory to download the modules from `package.json`.
+- Serverless application development
 
-## 2. Deploy
-`serverless deploy` or `sls deploy`. `sls` is shorthand for the Serverless CLI command
+## Prerequisites
 
-```
-Serverless: Packaging service...
-Serverless: Compiling Functions...
-Serverless: Compiling API Gateway definitions...
-Serverless: Compiling Rules...
-Serverless: Compiling Triggers & Feeds...
-Serverless: Deploying Functions...
-Serverless: Deployment successful!
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Ruby](https://ruby-lang.org/) (version 2.7 or higher)
+- Bundler gem
 
-Service Information
-platform:	openwhisk.ng.bluemix.net
-namespace:	_
-service:	ruby-service
+## Installation
 
-actions:
-ruby-service-dev-greeting
-```
-
-## 3. Invoke deployed function
-`serverless invoke --function greeting` or `serverless invoke -f greeting`
-
-`-f` is shorthand for `--function`
-
-In your terminal window you should see the response from Apache OpenWhisk
+Install dependencies:
 
 ```bash
-$ serverless invoke -f greeting
-{
-    "greeting": "Hello stranger!"
-}
-$ serverless invoke -f greeting -d '{"name": "James"}'
-{
-    "greeting": "Hello James!"
-}
+bundle install
 ```
 
-**For more information on the Serverless OpenWhisk plugin, please see the project repository: [https://serverless.com/framework/docs/providers/openwhisk/guide/credentials/](https://serverless.com/framework/docs/providers/openwhisk/guide/credentials/).**
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function greeting
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Usage Examples
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function greeting
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function greeting --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [OPENWHISK Provider Documentation](https://www.serverless.com/framework/docs/providers/openwhisk/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

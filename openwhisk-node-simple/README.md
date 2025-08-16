@@ -10,31 +10,94 @@ authorLink: 'https://github.com/jthomas'
 authorName: 'James Thomas'
 authorAvatar: 'https://avatars2.githubusercontent.com/u/2322?v=4&s=140'
 -->
-# Serverless Boilerplate - OpenWhisk - Node.js
 
-Make sure `serverless` is installed. [See installation guide](https://serverless.com/framework/docs/providers/openwhisk/guide/installation/).
+# OpenWhisk Serverless Simple example in NodeJS
 
-You will also need to set up your OpenWhisk account credentials using environment variables or a configuration file. Please see the [this guide for more information](https://serverless.com/framework/docs/providers/openwhisk/guide/credentials/).
+This example demonstrates a simple example in NodeJS.
 
-## 1. Install Provider Plugin & Service Dependencies
-`npm install` in this directory to download the modules from `package.json`.
+## Use Cases
 
-## 2. Deploy
-`serverless deploy` or `sls deploy`. `sls` is shorthand for the Serverless CLI command
+- Serverless application development
 
-## 3. Invoke deployed function
-`serverless invoke --function hello_world` or `serverless invoke -f hello_world`
+## Prerequisites
 
-`-f` is shorthand for `--function`
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
 
-In your terminal window you should see the response from Apache OpenWhisk
+## Installation
 
+Install dependencies:
+
+# No additional installation steps required
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
 ```bash
-{
-    "payload": "Hello, World!"
-}
+serverless invoke local --function hello_world
 ```
 
-Congrats you have just deployed and run your Hello World function!
+## Deployment
 
-**For more information on the Serverless OpenWhisk plugin, please see the project repository: [https://serverless.com/framework/docs/providers/openwhisk/guide/credentials/](https://serverless.com/framework/docs/providers/openwhisk/guide/credentials/).**
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Usage Examples
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function hello_world
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function hello_world --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [OPENWHISK Provider Documentation](https://www.serverless.com/framework/docs/providers/openwhisk/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

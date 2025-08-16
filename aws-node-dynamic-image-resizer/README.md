@@ -11,68 +11,143 @@ authorName: 'Sebastian Borza'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/3159454?v=4&s=140'
 -->
 
-# Dynamic image resizing with Node.js and Serverless framework
+# Dynamic Image Resizing API
 
-In this example, we set up a dynamic image resizing solution with AWS S3 and a Serverless framework function written in Node.js. We use [the `sharp` package](https://www.npmjs.com/package/sharp) for image resizing.
+This example shows you how to setup a dynamic image resizer API
 
-`sharp` includes native dependencies, so in this example we are building and deploying the Serverless function from a Docker container that’s based on Amazon Linux.
+## Use Cases
 
-## Pre-requisites
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-In order to deploy the function, you will need the following:
+## Prerequisites
 
-- API credentials for AWS, with Administrator permissions (for simplicity, not recommended in production).
-- An S3 bucket in your AWS account.
-- Serverless framework installed locally via `yarn global add serverless`.
-- Node.js 8 and `yarn` installed locally.
-- Docker and docker-compose installed locally.
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-## Deploying the Serverless project
+## Installation
 
-1. Clone the repository and install the dependencies:\
+Install dependencies:
 
-```
-yarn
-```
-
-2. Add your AWS credentials into the `secrets/secrets.env` file.
-3. Deploy the Serverless project:\
-
-```
-docker-compose up --build
+```bash
+npm install
 ```
 
-## Setting up the S3 bucket
-
-Make sure that your S3 bucket is public. Then follow these additional setup steps:
-
-1. Configure the S3 bucket for website hosting as shown [in the S3 documentation](https://docs.aws.amazon.com/AmazonS3/latest/dev/HowDoIWebsiteConfiguration.html).
-2. In the [Advanced Conditional Redirects section](https://docs.aws.amazon.com/AmazonS3/latest/dev/how-to-page-redirect.html#advanced-conditional-redirects) of the Website Hosting settings for the S3 bucket, set up the following redirect rule:
-
-```
-<RoutingRules>
-  <RoutingRule>
-    <Condition>
-      <HttpErrorCodeReturnedEquals>404</HttpErrorCodeReturnedEquals>
-    </Condition>
-    <Redirect>
-      <Protocol>https</Protocol>
-      <HostName>your_api_endpoint.execute-api.us-east-1.amazonaws.com</HostName>
-      <ReplaceKeyPrefixWith>dev-1/</ReplaceKeyPrefixWith>
-      <HttpRedirectCode>307</HttpRedirectCode>
-    </Redirect>
-  </RoutingRule>
-</RoutingRules>
+Or using yarn:
+```bash
+yarn install
 ```
 
-You will need to replace `your_api_endpoint` part with the URL of your Serverless endpoint. You can find out what’s the endpoint URL by running:
+## Local Development
 
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function resize
 ```
-serverless info
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
 ```
 
-or observing the output of the deployment step.
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
 
-## Any questions or suggestions?
+## Deployment
 
-Please feel free to open an issue on this repository if something doesn’t work is doesn’t behave as described here. Thanks for giving this project a try!
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function resize
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function resize --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

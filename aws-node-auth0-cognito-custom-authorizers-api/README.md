@@ -10,36 +10,140 @@ authorLink: 'https://github.com/shahzeb1'
 authorName: 'Shahzeb K.'
 authorAvatar: 'https://avatars2.githubusercontent.com/u/1383831?v=4&s=140'
 -->
-# API Gateway Authorizer Function for Auth0 or AWS Cognito using the [JWKS](https://auth0.com/docs/jwks) method.
 
-This is an example of how to protect API endpoints with [Auth0](https://auth0.com/) or [AWS Cognito](https://aws.amazon.com/cognito/) using JSON Web Key Sets ([JWKS](https://auth0.com/docs/jwks)) and a [custom authorizer lambda function](https://serverless.com/framework/docs/providers/aws/events/apigateway#http-endpoints-with-custom-authorizers).
+# API Gateway Authorizer Function for Auth0 or AWS Cognito using RS256 JSON Web Key Sets tokens.
 
-Custom Authorizers allow you to run an AWS Lambda Function via API Gateway before your targeted AWS Lambda Function is run. This is useful for Microservice Architectures or when you simply want to do some Authorization before running your business logic.
+Authorize your API Gateway with either Auth0 or Cognito JWKS RS256 tokens.
 
+## Use Cases
 
-## Use cases
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-- Protect API routes for authorized users
-- Rate limiting APIs
-- Remotely revoke tokens
+## Prerequisites
 
-## Setup
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-1. `npm install` json web token dependencies
+## Installation
 
-2. In [auth.js](auth.js#L10) replace the value of `iss` with either your [Auth0 iss](http://bit.ly/2hoeRXk) or [AWS Cognito ISS](http://amzn.to/2fo77UI). Make sure the `iss` url ends in a trailing `/`.
+Install dependencies:
 
-  ```js
-  /* auth.js */
-  // Replace with your auth0 or Cognito values
-  const iss = "https://<url>.com/";
-  ```
+```bash
+npm install
+```
 
-3. Deploy the service with `sls deploy` and grab the public and private endpoints.
+Or using yarn:
+```bash
+yarn install
+```
 
-## Test Authentication:  
--  Test with [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en): Make a new GET request with the Header containing "Authorization" with the value being "bearer `<id_token>`" for your `api/private` url.
-- Test using curl:
-  ```sh
-  curl --header "Authorization: bearer <id_token>" https://{api}.execute-api.{region}.amazonaws.com/api/private
-  ```
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function publicEndpoint
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function publicEndpoint
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function publicEndpoint --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

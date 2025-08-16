@@ -11,46 +11,126 @@ authorName: 'Rob Abbott'
 authorAvatar: 'https://avatars3.githubusercontent.com/u/5679763?v=4&s=140'
 -->
 
-# Serverless Framework Node Scheduled Cron on AWS
+# AWS Node Scheduled Cron example in NodeJS
 
-This template demonstrates how to develop and deploy a simple cron-like service running on AWS Lambda using the Serverless Framework.
+This is an example of creating a function that runs as a cron job using the serverless 
 
-This examples defines a single function, `rateHandler` which is triggered by an event of `schedule` type at a rate of 1 per minute. For detailed information about `schedule` event, please refer to corresponding section of Serverless [docs](https://serverless.com/framework/docs/providers/aws/events/schedule/).
+## Use Cases
 
-## Usage
+- Scheduled tasks and cron jobs
+- Background processing
+- Serverless application development
 
-### Deployment
+## Prerequisites
 
-In order to deploy the example, you need to run the following command:
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function rateHandler
 ```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
 serverless deploy
 ```
 
-After running deploy, you should see output similar to:
-
-```
-Deploying "aws-node-scheduled-cron" to stage "dev" (us-east-1)
-
-✔ Service deployed to stack aws-node-scheduled-cron-dev (151s)
-
-functions:
-  rateHandler: aws-node-scheduled-cron-dev-rateHandler (2.3 kB)
-
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
 
-There is no additional step required. Your defined schedules becomes active right away after deployment.
+### Deploy to specific stage/region
 
-### Local development
-
-The easiest way to develop and test your function is to use the `dev` command:
-
-```
-serverless dev
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
 ```
 
-This will start a local emulator of AWS Lambda and tunnel your requests to and from AWS Lambda, allowing you to interact with your function as if it were running in the cloud.
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
 
-Now you can invoke the function as before, but this time the function will be executed locally. Now you can develop your function locally, invoke it, and see the results immediately without having to re-deploy.
+### Usage Examples
 
-When you are done developing, don't forget to run `serverless deploy` to deploy the function to the cloud.
+This function runs on a schedule. Check CloudWatch logs for execution:
+```bash
+serverless logs --function functionName
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function rateHandler
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function rateHandler --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

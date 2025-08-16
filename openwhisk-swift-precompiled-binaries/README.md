@@ -10,119 +10,98 @@ authorLink: 'https://github.com/jthomas'
 authorName: 'James Thomas'
 authorAvatar: 'https://avatars2.githubusercontent.com/u/2322?v=4&s=140'
 -->
-# Serverless OpenWhisk Swift Template
 
-Hello! 😎
+# OpenWhisk Swift example with external libraries and pre-compiled binaries
 
-This is a template Swift service with pre-compiled binaries for the OpenWhisk platform. Before you can deploy your service, please follow the instructions below…
+This example shows you how to use external packages and deploy binaries
 
-### Have you set up your account credentials?
+## Use Cases
 
-Before you can deploy your service to OpenWhisk, you need to have an account registered with the platform.
+- Serverless application development
 
-- *Want to run the platform locally?* Please read the project's [*Quick Start*](https://github.com/openwhisk/openwhisk#quick-start) guide for deploying it locally.
-- *Want to use a hosted provider?* Please sign up for an account with [IBM Bluemix](https://console.ng.bluemix.net/) and then follow the instructions for getting access to [OpenWhisk on Bluemix](https://console.ng.bluemix.net/openwhisk/). 
+## Prerequisites
 
-Account credentials for OpenWhisk can be provided through a configuration file or environment variables. This plugin requires the API endpoint, namespace and authentication credentials.
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
 
-**Do you want to use a configuration file for storing these values?** Please [follow the instructions](https://console.ng.bluemix.net/openwhisk/cli) for setting up the OpenWhisk command-line utility. This tool stores account credentials in the `.wskprops` file in the user's home directory. The plugin automatically extracts credentials from this file at runtime.  No further configuration is needed.
+## Installation
 
-**Do you want to use environment variables for credentials?** Use the following environment variables to be pass in account credentials. These values override anything extracted from the configuration file.
+Install dependencies:
 
-- *OW_APIHOST* - Platform endpoint, e.g. `openwhisk.ng.bluemix.net`
-- *OW_AUTH* - Authentication key, e.g. `xxxxxx:yyyyy
+# No additional installation steps required
 
+## Local Development
 
+### Test individual functions
 
-### Have you installed and setup the provider plugin?
-
-Using the framework with the OpenWhisk platform needs you to install the provider plugin and link this to your service. 
-
-####  Install the provider plugin
-
-```
-$ npm install
+Test a function locally:
+```bash
+serverless invoke local --function hello
 ```
 
-**_…and that's it!_**
+## Deployment
 
-### Project Set-Up
+### Deploy to cloud
 
-This template project contains a Swift package that generates multiple binaries during the build process. These binaries are used to create separate OpenWhisk actions. 
-
-```
-$ tree .
-.
-├── Package.swift
-├── README.md
-├── Sources
-│   ├── hello
-│   │   └── main.swift
-│   └── welcome
-│       └── main.swift
-├── package.json
-└── serverless.yml
-
-```
-
-Swift action sources files use an [external package library](https://packagecatalog.com/package/jthomas/OpenWhiskAction) to handle wrapping functions within a shim for execution on the platform.
-
-```
-import OpenWhiskAction
-
-func hello(args: [String:Any]) -> [String:Any] {
-  if let name = args["name"] as? String {
-    return [ "greeting" : "Hello \(name)!" ]
-  } else {
-    return [ "greeting" : "Hello stranger!" ]
-  }
-}
-
-OpenWhiskAction(main: hello)
-```
-
-Binaries must be compiled for the correct platform architecture. This example uses the following Docker command to run the build in the OpenWhisk Swift environment.
-
-```
-docker run --rm -it -v $(pwd):/swift-package openwhisk/action-swift-v3.1.1 bash -e -c 'cd /swift-package && swift build -v -c release'
-```
-
-Plugins for the framework handle running the build scripts using npm prior to deployment.
-
-```
-custom:
-  scripts:
-    hooks:
-      'package:initialize': npm run-script compile
-
-plugins:
-  - serverless-openwhisk
-  - serverless-plugin-scripts
-```
-
-### Deploy Service
-
-Use the `serverless` command to deploy your service. 
-
-```shell
+Deploy the service:
+```bash
 serverless deploy
 ```
 
-If this command is successful, you can invoke both serverless functions defined in your configuration.
-
-```
-$ serverless invoke -f hello
-{
-    "greeting": "Hello stranger!"
-}
-$ serverless invoke -f welcome
-{
-    "greeting": "Welcome stranger!"
-}
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
 
-### Issues / Feedback / Feature Requests?
+### Usage Examples
 
-If you have any issues, comments or want to see new features, please file an issue in the project repository:
+### View logs
 
-https://github.com/serverless/serverless-openwhisk
+View function logs:
+```bash
+serverless logs --function hello
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function hello --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [OPENWHISK Provider Documentation](https://www.serverless.com/framework/docs/providers/openwhisk/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

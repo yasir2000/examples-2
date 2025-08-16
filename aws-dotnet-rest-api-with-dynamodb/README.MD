@@ -10,36 +10,87 @@ authorName: 'Samuele Resca'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/8921095?v=4&s=140'
 -->
 
-# DotNetServerless
+# Dot Net REST API with DynamoDB
 
-The following AWS lambda is built in .NET Core 2.1
+Setup a REST API w/ DynamoDB using Dot Net Core 2.1
 
+## Use Cases
 
-## Configure lambda
+- Serverless application development
 
-It is possible configure the lambda by editing the `env.config.yml` file:
+## Prerequisites
 
-```
-feature: <feature_name>
-version: 1.0.0.0
-region: <aws_region>
-environment: <environment>
-accountId: <aws_account_id>
-dynamoTable: <dynamo_table_name>
-```
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
 
-## Run 
+## Local Development
 
-The project contains a `package.json` file with the following commands:
+### Test individual functions
 
-```
-npm run tests
+Test a function locally:
+```bash
+serverless invoke local --function functionName
 ```
 
-```
-npm run build
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
 ```
 
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
-npm run deploy
+
+### Usage Examples
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function functionName
 ```
+
+Tail logs in real-time:
+```bash
+serverless logs --function functionName --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [UNKNOWN Provider Documentation](https://www.serverless.com/framework/docs/providers/unknown/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

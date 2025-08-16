@@ -10,46 +10,94 @@ authorLink: 'https://github.com/Fortiz2305'
 authorName: 'Francisco Ortiz'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/4025821?v=4&s=140'
 -->
+
 # Serverless Github Check
-Serverless Github Check. This repo is part of the [Serverless November Challenge](https://serverless.com/blog/no-server-november-challenge/)
 
-### Use Case
+This example demonstrates how to use Serverless Framework with unknown on UNKNOWN.
 
-The idea is to validate that all Pull Requests are related to a specific trello card.
+## Use Cases
 
-Check rules:
+- Serverless application development
 
-* To pass the check, the Pull Request body should start with: "Related trello card: https://trello.com/"
+## Prerequisites
 
-### Setup
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
 
-* Set your github token in [AWS Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html). The project is already configured to take the token from there if you call it `githubToken`. More info about adding parameters to AWS Parameter Store and why it's good to use it [here](https://serverless.com/blog/serverless-secrets-api-keys/)
+## Installation
 
-* Deploy the service
+Install dependencies:
 
+# No additional installation steps required
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function functionName
 ```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
 serverless deploy
 ```
 
-After the deploy has finished, you should see something like:
-
-```
-Service Information
-service: serverless-github-check
-stage: dev
-region: eu-west-1
-stack: serverless-github-check-dev
-api keys:
-  None
-endpoints:
-  POST - https://abcdefghij.execute-api.eu-west-1.amazonaws.com/dev/webhook
-functions:
-  githubCheck: serverless-github-check-dev-githubCheck
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
 
-* Configure the webhook in the github repository settings. This [link](https://developer.github.com/webhooks/creating/#setting-up-a-webhook) can help you.
+### Usage Examples
 
-  * In the Payload URL, set the API POST endpoint of your function.
-  * In the types of events to trigger the webhook, select "Let me select individual events". Once there, select at least `Pull Requests`.
+### View logs
 
-* Apply the github check for Trello cards or change the rule to apply a new one! :)
+View function logs:
+```bash
+serverless logs --function functionName
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function functionName --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [UNKNOWN Provider Documentation](https://www.serverless.com/framework/docs/providers/unknown/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

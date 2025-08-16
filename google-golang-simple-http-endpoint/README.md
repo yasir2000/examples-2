@@ -11,92 +11,110 @@ authorName: 'Sebastian Borza'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/3159454?v=4&s=140'
 -->
 
-# Simple HTTP Endpoint Example
+# GCF Simple HTTP Endpoint example in golang
 
-This example demonstrates how to setup a simple golang HTTP GET endpoint. When you fetch the endpoint we've set up here you'll see
-the time returned for the given request type.
+This example demonstrates how to use Serverless Framework with Go on GOOGLE.
 
 ## Use Cases
 
-- Wrapping an existing internal or external endpoint/service
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## Development
+## Prerequisites
 
-The GCF golang runtime has a few requirements when defining your solution, namely:
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [Google Cloud SDK](https://cloud.google.com/sdk) installed and configured
+- Valid Google Cloud credentials configured
+- [Go](https://golang.org/) (version 1.x)
+- Go modules enabled
 
-- Your function must be exported (e.g `Hello`)
-- You must define a non-main package, which can have an arbitrary name: `package p`
-- Your function code may not contain `package main` or a `func main()`
+## Installation
 
-Since this is an alpha runtime provided by GCF the docs are not yet available for consumption. We'll update this README
-once those instructions are made public.
-
-## Deploy
-
-In order to deploy the you endpoint simply run
-
-```bash
-serverless deploy -v
-```
-
-The expected result should be similar to:
+Install dependencies:
 
 ```bash
-Serverless: Uploading artifacts...
-Serverless: Artifacts successfully uploaded...
-Serverless: Updating deployment...
-Serverless: Checking deployment update progress...
-..............
-Serverless: Done...
-Service Information
-service: golang-simple-http-endpoint
-project: <project_name>
-stage: dev
-region: <region>
-
-Deployed functions
-currentTime
-  https://<region>-<project_name>.cloudfunctions.net/endpoint
+go mod tidy
 ```
 
-## Usage
+Or if using dep (legacy):
+```bash
+dep ensure
+```
 
-You can now invoke the Cloud Function directly and even see the resulting log via
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function hello
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function hello
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function hello --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-serverless invoke --function hello 
+serverless remove
 ```
 
-The expected result should be similar to:
-
+Remove from specific stage:
 ```bash
-Serverless: 6xthowrso4u2 {"message":"Go Serverless v1! Your function executed hello successfully!"}
+serverless remove --stage production
 ```
 
-And to check out the logs directly from sls, you can run the following:
+## Troubleshooting
 
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
 ```bash
-serverless logs --function hello 
-...
-Serverless: Displaying the 10 most recent log(s):
-
-2018-11-21T17:44:58.450200631Z: Function execution took 7 ms, finished with status code: 200
-2018-11-21T17:44:58.443618562Z: Function execution started
-2018-11-21T17:43:40.651063187Z: Function execution took 8 ms, finished with status code: 200
-2018-11-21T17:43:40.644123421Z: Function execution started
-2018-11-21T17:43:35.688702419Z: Function execution took 25 ms, finished with status code: 200
-2018-11-21T17:43:35.664212161Z: Function execution started
-2018-11-21T17:40:46.166468516Z: Function execution took 6 ms, finished with status code: 200
-2018-11-21T17:40:46.161422666Z: Function execution started
-2018-11-21T17:33:27.004019351Z: Function execution took 10 ms, finished with status code: 200
-2018-11-21T17:33:26.994600775Z: Function execution started
+SLS_DEBUG=* serverless deploy
 ```
 
-Finally you can send an HTTP request directly to the endpoint using a tool like curl:
+## Additional Resources
 
-```bash
-curl https://<region>-<project_name>.cloudfunctions.net/Hello
-```
-
-**NOTE:** notice that the request terminates with your golang exported function name, not the serverless function
-name you've defined.
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [GOOGLE Provider Documentation](https://www.serverless.com/framework/docs/providers/google/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)
+- [Google Cloud Functions Documentation](https://cloud.google.com/functions/docs)

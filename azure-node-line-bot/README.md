@@ -10,38 +10,101 @@ authorLink: 'https://github.com/jiyeonseo'
 authorName: seojeee
 authorAvatar: 'https://avatars2.githubusercontent.com/u/2231510?v=4&s=140'
 -->
+
 # Azure-line-bot-exmaple
 
-This is simple echo bot on Line messenger.  
+This example demonstrates how to use Serverless Framework with unknown on AZURE.
 
-## Before you begin
-- Line developer account
-- [A channel for Line Messaging API](https://developers.line.me/en/docs/messaging-api/getting-started/)
+## Use Cases
 
-## Get started
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-### install dependencies
+## Prerequisites
 
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+
+## Installation
+
+Install dependencies:
+
+# No additional installation steps required
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function hello
 ```
-$ npm install 
-```
 
-### insert your Line bot Access Token & Secret 
-```
-const config = {
-  channelAccessToken: "CHANNEL_ACCESS_TOKEN",
-  channelSecret: "CHANNEL_SECRET",
-};
+## Deployment
 
-```
+### Deploy to cloud
 
-### deploy
-```
+Deploy the service:
+```bash
 serverless deploy
 ```
 
-![image](https://github.com/jiyeonseo/azure-line-bot-example/blob/master/screenshot-2.png)
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
 
-## More details  
-- [Building a bot](https://developers.line.me/en/docs/messaging-api/building-bot/)
-- [line-bot-sdk-nodejs](https://github.com/line/line-bot-sdk-nodejs)
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function hello
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function hello --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AZURE Provider Documentation](https://www.serverless.com/framework/docs/providers/azure/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

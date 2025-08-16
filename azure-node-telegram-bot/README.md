@@ -9,49 +9,101 @@ authorLink: 'https://github.com/jiyeonseo'
 authorName: seojeee
 authorAvatar: 'https://avatars2.githubusercontent.com/u/2231510?v=4&s=140'
 -->
+
 # Azure Node Telegram Bot
-This example of telegram bot using Azure Function with Serverless Framework. 
 
-## Usage
+This example demonstrates how to use Serverless Framework with unknown on AZURE.
 
-### Required 
-- Node.js `v6.5.0` or later
-- Telegram account 📱 
-- Azure Account. check this [link](https://serverless.com/framework/docs/providers/azure/guide/credentials/) about azure credentials.   
+## Use Cases
 
-### Get started
-1. Clone the repo and install dependencies
-```shall
-# Clone the repo
-$ git clone git@github.com:serverless/examples.git serverless-examples
-$ cd serverless-examples/azure-node-telegram-bot
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-# Install the Serverless Framework
-$ npm install serverless -g
+## Prerequisites
 
-# Install the necessary plugins
-$ npm install
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+
+## Installation
+
+Install dependencies:
+
+# No additional installation steps required
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function hello
 ```
 
-2. Create a bot from Telegram, sending this message to [@BotFather](https://web.telegram.org/#/im?p=@BotFather)
-```
-$ /newbot
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
 ```
 
-
-3. Put the token received into a file called `handle.js`.
-```
-const token = "YOUR_API_TOKEN";
-```
-
-4. Deploy it!
-```
-$ serverless deploy
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
 
-5. Configure webhook
-```
-curl --request POST --url https://api.telegram.org/bot{token}/setWebhook --header 'content-type: application/json' --data '{"url": "{end-poinnt}"}'
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
 ```
 
-Say `hello` to your bot 🤖
+### View logs
+
+View function logs:
+```bash
+serverless logs --function hello
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function hello --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AZURE Provider Documentation](https://www.serverless.com/framework/docs/providers/azure/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

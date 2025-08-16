@@ -10,156 +10,131 @@ authorLink: 'https://github.com/rupakg'
 authorName: 'Rupak Ganguly'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/8188?v=4&s=140'
 -->
-# Serverless REST API
 
-This example demonstrates how to setup a [RESTful Web Services](https://en.wikipedia.org/wiki/Representational_state_transfer#Applied_to_web_services) allowing you to create, list, get, update and delete Todos. FaunaDB is used to store the data.
+# AWS Serverless REST API with FaunaDB store example in Python
 
-## Structure
+This example demonstrates how to setup a RESTful Web Service allowing you to create, list, get, update and delete Todos. FaunaDB is used to store the data.
 
-This service has a separate directory for all the todo operations. For each operation exactly one file exists e.g. `todos/delete.py`. In each of these files there is exactly one function defined.
+## Use Cases
 
-The idea behind the `todos` directory is that in case you want to create a service containing multiple resources e.g. users, notes, comments you could do so in the same service. While this is certainly possible you might consider creating a separate service for each resource. It depends on the use-case and your preference.
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## Use-cases
+## Prerequisites
 
-- API for a Web Application
-- API for a Mobile Application
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Python](https://python.org/) (version 3.6 or higher)
+- pip package manager
 
-## FaunaDB Secret
+## Installation
 
-Visit https://fauna.com/serverless-cloud-sign-up to obtain a `FAUNADB_SECRET` to use in `serverless.yml`.
-
-## Setup
-
-With your FaunaDB Secret in hand, set it in `serverless.yml`
-
-```yml
-  environment:
-    FAUNADB_SECRET: YOUR-SECRET-HERE
-```
-
-To avoid the error message `DistutilsOptionError: must supply either home or prefix/exec-prefix -- not both` first is necessary create a python virtual environment
+Install dependencies:
 
 ```bash
-virtualenv -p `which python` venv
-
-source venv/bin/activate
+pip install -r requirements.txt
 ```
 
-In order to make it easy to package in this example we're using the node plugin `serverless-python-requirements`, so install it with
+## Local Development
 
+### Test individual functions
+
+Test a function locally:
 ```bash
-npm install
+serverless invoke local --function create
 ```
 
-## Deploy
+## Deployment
 
-In order to deploy the endpoint simply run
+### Deploy to cloud
 
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The expected result should be similar to:
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function create
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function create --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `FAUNADB_SECRET`: YOUR-SECRET-HERE
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-Serverless: Installing required Python packages...
-Serverless: Linking required Python packages...
-Serverless: Packaging service...
-Serverless: Unlinking required Python packages...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading service .zip file to S3 (2.33 MB)...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-......................................
-Serverless: Stack update finished...
-Serverless: Removing old service versions...
-Service Information
-service: serverless-rest-api-with-faunadb
-stage: dev
-region: us-east-1
-api keys:
-  None
-endpoints:
-  POST - https://bo19b9b32h.execute-api.us-east-1.amazonaws.com/dev/todos
-  GET - https://bo19b9b32h.execute-api.us-east-1.amazonaws.com/dev/todos
-  GET - https://bo19b9b32h.execute-api.us-east-1.amazonaws.com/dev/todos/{id}
-  PUT - https://bo19b9b32h.execute-api.us-east-1.amazonaws.com/dev/todos/{id}
-  DELETE - https://bo19b9b32h.execute-api.us-east-1.amazonaws.com/dev/todos/{id}
-functions:
-  create: serverless-rest-api-with-faunadb-dev-create
-  list: serverless-rest-api-with-faunadb-dev-list
-  get: serverless-rest-api-with-faunadb-dev-get
-  update: serverless-rest-api-with-faunadb-dev-update
-  delete: serverless-rest-api-with-faunadb-dev-delete
+serverless remove
 ```
 
-## Setup schema
-
-Before you execute any command, first you have to setup a FaunaDB schema with the command:
-
+Remove from specific stage:
 ```bash
-serverless invoke --function schema
+serverless remove --stage production
 ```
 
-## Usage
+## Troubleshooting
 
-You can create, retrieve, update, or delete todos with the following commands:
+### Common Issues
 
-### Create a Todo
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
 
+### Debug Mode
+
+Enable debug mode for more verbose output:
 ```bash
-curl -X POST https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/todos --data '{ "text": "Learn Serverless" }'
+SLS_DEBUG=* serverless deploy
 ```
 
-No output
+### AWS Specific Issues
 
-### List all Todos
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
 
-```bash
-curl https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/todos
-```
+## Additional Resources
 
-Example output:
-```json
-[{"text": "Deploy my first service", "id": "159546695821033477", "checked": true, "updatedAt": 1479139961304}, {"text": "Learn Serverless", "id": "159547069624745989", "createdAt": 1479139943241, "checked": false, "updatedAt": 1479139943241}]
-```
-
-### Get one Todo
-
-```bash
-# Replace the <id> part with a real id from your todos class
-curl https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/todos/<id>
-```
-
-Example Result:
-```json
-{"text": "Learn Serverless", "id": "159547069624745989", "createdAt": 1479138570824, "checked": false, "updatedAt": 1479138570824}
-```
-
-### Update a Todo
-
-```bash
-# Replace the <id> part with a real id from your todos class
-curl -X PUT https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/todos/<id> --data '{ "text": "Learn Serverless", "checked": true }'
-```
-
-Example Result:
-```json
-{"text": "Learn Serverless", "id": "159547069624745989", "createdAt": 1479138570824, "checked": true, "updatedAt": 1479138570824}
-```
-
-### Delete a Todo
-
-```bash
-# Replace the <id> part with a real id from your todos class
-curl -X DELETE https://XXXXXXX.execute-api.us-east-1.amazonaws.com/dev/todos/<id>
-```
-
-No output
-
-## Scaling
-
-### AWS Lambda
-
-By default, AWS Lambda limits the total concurrent executions across all functions within a given region to 100. The default limit is a safety limit that protects you from costs due to potential runaway or recursive functions during initial development and testing. To increase this limit above the default, follow the steps in [To request a limit increase for concurrent executions](http://docs.aws.amazon.com/lambda/latest/dg/concurrent-executions.html#increase-concurrent-executions-limit).
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

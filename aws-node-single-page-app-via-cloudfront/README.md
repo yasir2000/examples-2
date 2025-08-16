@@ -10,114 +10,137 @@ authorLink: 'https://github.com/erezrokah'
 authorName: 'Erez Rokah'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/26760571?v=4&s=140'
 -->
-# Single Page Application
 
-This example demonstrates how to setup a Single Page Application. Our goals here are to serve a static page with low latency. One additional goal is to make sure the client side application can leverage the History API functions `pushState` and `replaceState` to change the current URL without reloading. Further we want to make sure all the content is only served via HTTPS. HTTP requests should get redirected to HTTPS.
+# AWS Single Page Application example in NodeJS
 
-To achieve these goals we use S3 in combination with CloudFront. S3 is used to store our static HTML file while CloudFront is responsible for making it available via Amazon's Content Delivery Network.
+This example demonstrates how to setup a Single Page Application.
 
-## Prerequisite
+## Use Cases
 
-[Nodejs](https://nodejs.org/en/) (at least version 8)
+- Serverless application development
 
-The `serverless-single-page-app-plugin` in this example requires the Serverless Framework version 1.2.0 or higher and the AWS Command Line Interface. Learn more [here](http://docs.aws.amazon.com/cli/latest/userguide/installing.html) on how to install the AWS Command Line Interface.
+## Prerequisites
 
-## Setup
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-Replace the bucket name in `serverless.yaml` which you can find inside the `custom` section. There is a placeholder text `yourBucketName123`. This is due the fact that bucket names must be globally unique across all AWS S3 buckets.
+## Installation
 
-Since this plugin uses a custom Serverless plugin you need to setup the `node_modules` by running:
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-The `serverless-single-page-app-plugin` plugin in this example is there to simplify the experience using this example. It's not necessary to understand the plugin to deploy your Single Page Application.
+Or using yarn:
+```bash
+yarn install
+```
 
-# Deploy
+## Local Development
 
-Warning: Whenever you making changes to CloudFront resource in `serverless.yml` the deployment might take a while e.g 20 minutes.
+### Test individual functions
 
-In order to deploy the Single Page Application you need to setup the infrastructure first by running
+Test a function locally:
+```bash
+serverless invoke local --function functionName
+```
 
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The expected result should be similar to:
-
+Deploy a single function (faster for development):
 ```bash
-Serverless: Packaging service…
-Serverless: Uploading CloudFormation file to S3…
-Serverless: Uploading service .zip file to S3…
-Serverless: Updating Stack…
-Serverless: Checking Stack update progress…
-...........................
-Serverless: Stack update finished…
-
-Service Information
-service: serverless-simple-http-endpoint
-stage: dev
-region: us-east-1
-api keys:
-  None
-endpoints:
-  None
-functions:
-  None
+serverless deploy function --function functionName
 ```
 
-After this step your S3 bucket and CloudFront distribution is setup. Now you need to upload your static file e.g. `index.html` and `app.js` to S3. You can do this by running
+### Deploy to specific stage/region
 
+Deploy to a specific stage:
 ```bash
-serverless syncToS3
+serverless deploy --stage production
 ```
 
-The expected result should be similar to
-
+Deploy to a specific region:
 ```bash
-Serverless: upload: app/index.html to s3://yourBucketName123/index.html
-Serverless: upload: app/app.js to s3://yourBucketName123/app.js
-Serverless: Successfully synced to the S3 bucket
+serverless deploy --region eu-west-1
 ```
 
-Hint: The plugin is simply running the AWS CLI command: `aws S3 sync app/ s3://yourBucketName123/`
+### Usage Examples
 
-Now you just need to figure out the deployed URL. You can use the AWS Console UI or run
+### View logs
 
+View function logs:
 ```bash
-sls domainInfo
+serverless logs --function functionName
 ```
 
-The expected result should be similar to
-
+Tail logs in real-time:
 ```bash
-Serverless: Web App Domain: dyj5gf0t6nqke.cloudfront.net
+serverless logs --function functionName --tail
 ```
 
-Visit the printed domain domain and navigate on the web site. It should automatically redirect you to HTTPS and visiting <yourURL>/about will not result in an error with the status code 404, but rather serves the `index.html` and renders the about page.
+## Configuration
 
-This is how it should look like: ![Screenshot](https://cloud.githubusercontent.com/assets/223045/20391786/287cb3acd5-11e6-9eaf-89f641ed9e14.png)
+This service can be configured using environment variables or serverless.yml custom section.
 
-# Re-deploying
+## Cleanup
 
-If you make changes to your Single Page Application you might need to invalidate CloudFront's cache to make sure new files are served.
-Meaning, run:
-
-```bash
-serverless syncToS3
-```
-
-To sync your files and then:
+Remove the deployed service and all resources:
 
 ```bash
-serverless invalidateCloudFrontCache
+serverless remove
 ```
 
-## Further Improvements
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
 
-Here a list of potential improvements you can do with your CloudFront setup depending on your use-case:
+## Troubleshooting
 
-- Setup a custom domain alias
-- Logging for CloudFront requests
-- Setup a restriction so the Bucket is not publicly accessible except via CloudFront
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

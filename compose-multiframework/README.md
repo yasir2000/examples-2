@@ -1,25 +1,84 @@
 # Serverless Framework Compose: Multiframework Deployment
 
-Deploying multiple services in a monorepository is a common pattern in larger teams. Serverless Framework Compose simplifies the deployment and orchestration of these services by offering:
+This example demonstrates how to use Serverless Framework with unknown on UNKNOWN.
 
-1. Parallel deployment of multiple services
-2. Ordered deployment of services
-3. Support for deploying different types of services (e.g., Traditional, SAM, CloudFormation) together
-4. Sharing outputs between services
-5. Running commands across multiple services
+## Use Cases
 
-In this example, we demonstrate how to use Serverless Compose to deploy three types of services together:
+- Serverless application development
 
-1. AWS CloudFormation Service: Deploys shared resources with outputs that are referenced by the other services.
-2. Serverless Framework Traditional Service
-3. AWS SAM Template Service
+## Prerequisites
 
-The AWS CloudFormation service is deployed first to create shared resources, followed by the parallel deployment of the Traditional and AWS SAM services.
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
 
-This example also illustrates how to use Serverless Variables with Serverless Compose for organizing and structuring your application, as well as managing different stages.
+## Local Development
 
-For more information about Serverless Compose, please see the [Serverless Compose docs](https://www.serverless.com/framework/docs/guides/compose)
+### Test individual functions
 
-For more information about using AWS SAM and or AWS CloudFormation templates with the Serverless Framework, please see the [AWS SAM/CFN docs](https://www.serverless.com/framework/docs/guides/sam)
+Test a function locally:
+```bash
+serverless invoke local --function functionName
+```
 
-For more information about Serverless Variables, please see the [Serverless Variables docs](https://www.serverless.com/framework/docs/guides/variables)
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Usage Examples
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function functionName
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function functionName --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [UNKNOWN Provider Documentation](https://www.serverless.com/framework/docs/providers/unknown/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

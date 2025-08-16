@@ -13,100 +13,124 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 
 # Serverless Framework Python Flask API on AWS
 
-This template demonstrates how to develop and deploy a simple Python Flask API service running on AWS Lambda using the Serverless Framework.
+This template demonstrates how to develop and deploy a simple Python Flask API running on AWS Lambda using the Serverless Framework.
 
-This template configures a single function, `api`, which is responsible for handling all incoming requests thanks to configured `http` events. To learn more about `http` event configuration options, please refer to [http event docs](https://www.serverless.com/framework/docs/providers/aws/events/apigateway/). As the events are configured in a way to accept all incoming requests, `Flask` framework is responsible for routing and handling requests internall y. The implementation takes advantage of `serverless-wsgi`, which allows you to wrap WSGI applications such as Flask apps. To learn more about `serverless-wsgi`, please refer to corresponding [GitHub repository](https://github.com/logandk/serverless-wsgi). Additionally, the template relies on `serverless-python-requirements` plugin for packaging dependencies from `requirements.txt` file. For more details about `serverless-python-requirements` configuration, please refer to corresponding [GitHub repository](https://github.com/UnitedIncome/serverless-python-requirements).
+## Use Cases
 
-## Usage
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-### Deployment
+## Prerequisites
 
-This example is made to work with the Serverless Framework dashboard, which includes advanced features such as CI/CD, monitoring, metrics, etc.
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Python](https://python.org/) (version 3.6 or higher)
+- pip package manager
 
-In order to deploy with dashboard, you need to first login with:
+## Installation
 
-```
-serverless login
-```
+Install dependencies:
 
-install dependencies with:
-
-```
-npm install
-```
-
-and
-
-```
+```bash
 pip install -r requirements.txt
 ```
 
-and then perform deployment with:
+## Local Development
 
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function api
 ```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
 serverless deploy
 ```
 
-After running deploy, you should see output similar to:
-
-```
-Deploying "aws-python-flask-api" to stage "dev" (us-east-1)
-
-Using Python specified in "runtime": python3.12
-
-Packaging Python WSGI handler...
-
-✔ Service deployed to stack aws-python-flask-api-dev (104s)
-
-endpoints:
-  ANY - https://xxxxxxxxxe.execute-api.us-east-1.amazonaws.com/dev/
-  ANY - https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/{proxy+}
-functions:
-  api: aws-python-flask-api-dev-api (41 MB)
-
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
 
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [http event docs](https://www.serverless.com/framework/docs/providers/aws/events/apigateway/).
+### Deploy to specific stage/region
 
-### Invocation
-
-After successful deployment, you can call the created application via HTTP:
-
-```
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/dev/
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
 ```
 
-Which should result in the following response:
-
-```json
-{ "message": "Hello from root!" }
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
 ```
 
-Calling the `/hello` path with:
+### Usage Examples
 
-```
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/dev/hello
-```
-
-Should result in the following response:
-
-```json
-{ "message": "Hello from path!" }
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
 ```
 
-### Local development
+### View logs
 
-Thanks to capabilities of `serverless-wsgi`, it is also possible to run your application locally, however, in order to do that, you will need to first install `werkzeug` dependency, as well as all other dependencies listed in `requirements.txt`. It is recommended to use a dedicated virtual environment for that purpose. You can install all needed dependencies with the following commands:
-
-```
-pip install werkzeug
-pip install -r requirements.txt
+View function logs:
+```bash
+serverless logs --function api
 ```
 
-At this point, you can run your application locally with the following command:
-
+Tail logs in real-time:
+```bash
+serverless logs --function api --tail
 ```
-serverless wsgi serve
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
 ```
 
-For additional local development capabilities of `serverless-wsgi` plugin, please refer to corresponding [GitHub repository](https://github.com/logandk/serverless-wsgi).
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

@@ -10,61 +10,94 @@ authorLink: 'https://github.com/jthomas'
 authorName: 'James Thomas'
 authorAvatar: 'https://avatars2.githubusercontent.com/u/2322?v=4&s=140'
 -->
-# Serverless Boilerplate - OpenWhisk - Node.js & Docker
 
-Make sure `serverless` is installed. [See installation guide](https://serverless.com/framework/docs/providers/openwhisk/guide/installation/).
+# OpenWhisk Serverless Boilerplate using Docker example in NodeJS
 
-You will also need to set up your OpenWhisk account credentials using environment variables or a configuration file. Please see the [this guide for more information](https://serverless.com/framework/docs/providers/openwhisk/guide/credentials/).
+This example shows a Serverless boilerplate using Docker in NodeJS.
 
-## 1. Install Service Dependencies & Provider Plugin
-`npm install` in this directory to download the modules from `package.json`.
+## Use Cases
 
-## 2. Deploy
-`serverless deploy` or `sls deploy`. `sls` is shorthand for the Serverless CLI command
+- Serverless application development
 
-```
-$ serverless deploy
-Serverless: Packaging service...
-Serverless: Compiling Functions...
-Serverless: Compiling API Gateway definitions...
-Serverless: Compiling Rules...
-Serverless: Compiling Triggers & Feeds...
-Serverless: Deploying Functions...
-Serverless: Deploying Sequences...
-Serverless: Deployment successful!
+## Prerequisites
 
-Service Information
-platform:	openwhisk.ng.bluemix.net
-namespace:	_
-service:	testing
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
 
-actions:
-testing-dev-location_sunrise_sunset    testing-dev-sunrise_sunset    testing-dev-location_from_address    testing-dev-jq
+## Installation
+
+Install dependencies:
+
+# No additional installation steps required
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function location_from_address
 ```
 
-## 3. Invoke sequence function
-`serverless invoke -f location_sunrise_sunset -d '{"address": "london"}'`
+## Deployment
 
-`-f` is also shorthand for `--function`
+### Deploy to cloud
 
-In your terminal window you should see the response from Apache OpenWhisk
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Usage Examples
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function location_from_address
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function location_from_address --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-{
-    "results": {
-        "astronomical_twilight_end": "8:26:54 PM",
-        "day_length": "12:48:55",
-        "civil_twilight_begin": "5:06:55 AM",
-        "solar_noon": "12:05:03 PM",
-        "sunrise": "5:40:36 AM",
-        "civil_twilight_end": "7:03:11 PM",
-        "sunset": "6:29:31 PM",
-        "nautical_twilight_end": "7:43:44 PM",
-        "astronomical_twilight_begin": "3:43:12 AM",
-        "nautical_twilight_begin": "4:26:22 AM"
-    },
-    "status": "OK"
-}
+serverless remove
 ```
 
-**For more information on the Serverless OpenWhisk plugin, please see the project repository: [https://serverless.com/framework/docs/providers/openwhisk/guide/credentials/](https://serverless.com/framework/docs/providers/openwhisk/guide/credentials/).**
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [OPENWHISK Provider Documentation](https://www.serverless.com/framework/docs/providers/openwhisk/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

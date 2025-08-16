@@ -10,71 +10,133 @@ authorLink: 'https://github.com/rupakg'
 authorName: 'Rupak Ganguly'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/8188?v=4&s=140'
 -->
-# Serverless IoT Event
+
+# AWS Serverless IoT Event example in NodeJS
 
 This example demonstrates how to setup a AWS IoT Rule to send events to a Lambda function.
 
-## Use-cases
+## Use Cases
 
-- Analytics for IoT events
-- Reacting on IoT events
+- Serverless application development
 
-## Setup
+## Prerequisites
 
-In order to deploy the function simply run
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
+## Installation
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Or using yarn:
+```bash
+yarn install
+```
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function log
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The expected result should be similar to:
-
+Deploy a single function (faster for development):
 ```bash
-Serverless: Packaging service...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading service .zip file to S3 (363 B)...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-................
-Serverless: Stack update finished...
-Service Information
-service: aws-node-iot-event
-stage: dev
-region: us-east-1
-api keys:
-  None
-endpoints:
-  None
-functions:
-  aws-node-iot-event-dev-log: arn:aws:lambda:us-east-1:377024778620:function:aws-node-iot-event-dev-log
+serverless deploy function --function functionName
 ```
 
-## Usage
+### Deploy to specific stage/region
 
-In `serverless.yml` the log-function is configured to receive any event from the IoT Topic `mybutton`. We now can go to the IoT Console and visit the Tab `Test`.
-
-There fill `mybutton` into the topic input field in the publish section. Replace existing example data with the following example and press the publish button.
-
-```json
-{
-  "message": "My first IoT event",
-  "value": 2
-}
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
 ```
 
-To verify that our event was forwarded to our log-function run
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
 
+### Usage Examples
+
+### View logs
+
+View function logs:
 ```bash
 serverless logs --function log
 ```
 
-The expected result should be similar to:
-
+Tail logs in real-time:
 ```bash
-START RequestId: 241921d10f-11e6-936c-a98ff4127599 Version: $LATEST
-2002 18:16:04.768 (+01:00)	241921d10f-11e6-936c-a98ff4127599	{ message: 'My first IoT event', value: 2 }
-END RequestId: 241921d10f-11e6-936c-a98ff4127599
-REPORT RequestId: 241921d10f-11e6-936c-a98ff4127599	Duration: 23.53 ms	Billed Duration: 100 ms 	Memory Size: 1024 MB	Max Memory Used: 8 MB
+serverless logs --function log --tail
 ```
 
-In the output you can see the IoT event that has been triggered from the test console.
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

@@ -10,37 +10,98 @@ authorLink: 'https://github.com/andresmgot'
 authorName: Andres
 authorAvatar: 'https://avatars0.githubusercontent.com/u/4025665?v=4&s=140'
 -->
-# Serverless Boilerplate - Kubeless - Python
 
-Make sure `kubeless` and `serverless` are installed. See the respective installation guides:
-* [Kubeless](https://github.com/kubeless/kubeless/blob/master/README.md#usage)
-* [Serverless](https://github.com/serverless/serverless#quick-start)
+# Kubeless Serverless Simple function example in Python
 
-Please see the [this guide for more information](https://github.com/serverless/serverless-kubeless/blob/master).
+This example demonstrates a simple function example in Python.
 
-## 1. Install Service Dependencies
-Run `npm install` in this directory to download the modules from `package.json`.
+## Use Cases
 
-## 2. Deploy
-Run `serverless deploy` in order to deploy the function defined in `serverless.yml`
+- Serverless application development
 
-```bash
-$ serverless deploy
-Serverless: Packaging service...
-Serverless: Deploying function: hello...
-Serverless: Function hello succesfully deployed
-```
+## Prerequisites
 
-## 3. Invoke deployed function
-Run `serverless invoke --function hello --log --data "Bob"`
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Python](https://python.org/) (version 3.6 or higher)
+- pip package manager
 
-In your terminal window you should see the response from Kubernetes.
+## Installation
+
+Install dependencies:
 
 ```bash
-$ sls invoke --function hello --data 'Bob' --log
-Serverless: Calling function: hello...
---------------------------------------------------------------------
-Hello Bob!
+pip install -r requirements.txt
 ```
 
-**For more information on the Serverless Kubeless plugin, please see the project repository: [https://github.com/serverless/serverless-kubeless](https://github.com/serverless/serverless-kubeless).**
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function hello
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Usage Examples
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function hello
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function hello --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [KUBELESS Provider Documentation](https://www.serverless.com/framework/docs/providers/kubeless/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

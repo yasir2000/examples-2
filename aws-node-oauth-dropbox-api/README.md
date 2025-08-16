@@ -11,41 +11,150 @@ authorName: Jay Deshmukh
 authorAvatar: 'https://avatars0.githubusercontent.com/u/38460988?v=4&s=140'
 -->
 
-### 
+# Aws Node Oauth Dropbox Api
 
-#### For Dev 
-1. Create an app from 'https://www.dropbox.com/developers/apps'
-2. Set Redirect URI as 'http://localhost:9999/dropbox/callback'
-3. Get ClientId , ClientSecret ,  CallbackUrl and paste it into /config/default.yml
-    - Change profile in serverless.yml with your respective profile 
-    - run `npm install`
-    - run `npm run dev`
-4. Go To  `http://localhost:9999/dropbox/'
-5. Authenticate and Authorize
-6. Copy the Access Token
-7. Make the final request to dropbox api (To generate a temprory link of a file)
+This example demonstrates how to use Serverless Framework with JavaScript on AWS.
 
-    ```
-    curl -X POST \
-    https://api.dropboxapi.com/2/files/get_temporary_link \
-    -H 'Authorization: Bearer <token> ' \
-    -H 'Cache-Control: no-cache' \
-    -H 'Content-Type: application/json' \
-    -d '{
-        "path" : "/temp.rtf" 
-    }'
+## Use Cases
 
-P.S :-  add your access token in Authorization header after Bearer eg :- [Bearer aklfbakbjkasbcbvkcjba] and make sure there exists the temp.rtf file in your dropbox root directory
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-### For Dev Test 
+## Prerequisites
 
-1. Go to `default_test.yml`
-2. Change the EMAIL and PASSWORD with your own dropbox credentials 
-3. `npm run test` 
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
+## Installation
 
-### For deploying on AWS
--  Follow the same procedure for deploying it on AWS just make the necessary changes in the following files
-    - `config/stage.yml`
-    - `config/stage_test.yml`
-    - `test/test.js  (link to stage_test.yml)`
+Install dependencies:
+
+```bash
+npm install
+```
+
+Or using yarn:
+```bash
+yarn install
+```
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function dropbox_step1
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function dropbox_step1
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function dropbox_step1 --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `CLIENT_SECRET`: ${file(./config/${self:provider.stage}.yml):CLIENT_SECRET}
+- `CLIENT_ID`: ${file(./config/${self:provider.stage}.yml):CLIENT_ID}
+- `STAGE`: ${file(./config/${opt:stage}.yml):STAGE}
+- `CALLBACK_URL`: ${file(./config/${self:provider.stage}.yml):CALLBACK_URL}
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

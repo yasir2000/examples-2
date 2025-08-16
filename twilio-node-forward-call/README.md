@@ -10,39 +10,132 @@ authorName: 'Stefan Judis'
 authorAvatar: 'https://avatars3.githubusercontent.com/u/962099?v=4&s=140'
 -->
 
-# Serverless Boilerplate - Twilio - Node.js - Forward a call
+# Twilio Forward a Call
 
-[Twilio](https://www.twilio.com) is a commincations API provide that allows developers to build applications using phone calls, SMS, emails and more. To configure communications a lot of services work with a configuration language called [TwiML](https://www.twilio.com/docs/glossary/what-is-twilio-markup-language-twiml).
+This example projects helps you deploy a serverless function to the Twilio runtime. The function responds the TwiML configuration to forward phone call.
 
-This example projects helps you deploy a serverless function to the Twilio runtime. The function responds the TwiML configuration to [forward phone call](https://www.twilio.com/docs/voice/tutorials/call-forwarding).
+## Use Cases
 
-Make sure `serverless` is installed globally. [See installation guide](https://serverless.com/framework/docs/providers/openwhisk/guide/installation/).
+- Serverless application development
 
-You will also need to set up your Twilio account credentials using environment variables. You find these in your [Twilio Console](https://twilio.com/console/).
+## Prerequisites
 
-Needed environment variables are:
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
 
-- `TWILIO_ACCOUNT_SID`
-- `TWILIO_AUTH_TOKEN`
-- `MY_PHONE_NUMBER`
+## Installation
 
-## 1. Install Twilio Node.js Provider Plugin & Service Dependencies
-`npm install` in this directory to download the modules from `package.json`.
+Install dependencies:
 
-## 2. Deploy
-`serverless deploy` or `sls deploy`. `sls` is shorthand for the Serverless CLI command
+# No additional installation steps required
 
-## 3. Invoke deployed function
-`serverless invoke --function forward-call` or `serverless invoke -f forward-call`
+## Local Development
 
-`-f` is shorthand for `--function`
+### Test individual functions
 
-In your terminal window you should see the response from Apache OpenWhisk
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?><Response><Dial>+491...</Dial></Response>
+Test a function locally:
+```bash
+serverless invoke local --function forward-call
 ```
 
-Congrats you have just deployed and run your Forward Call function!
+## Deployment
 
-**For more information on the Twilio Runtime Serverless plugin, please see the project repository: [github.com/twilio-labs/serverless-framework-integration](https://github.com/twilio-labs/serverless-framework-integration).**
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Usage Examples
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function forward-call
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function forward-call --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `0`: $
+- `1`: {
+- `2`: e
+- `3`: n
+- `4`: v
+- `5`: :
+- `6`: T
+- `7`: W
+- `8`: I
+- `9`: L
+- `10`: I
+- `11`: O
+- `12`: _
+- `13`: R
+- `14`: U
+- `15`: N
+- `16`: T
+- `17`: I
+- `18`: M
+- `19`: E
+- `20`: _
+- `21`: E
+- `22`: N
+- `23`: V
+- `24`: ,
+- `25`:  
+- `26`: '
+- `27`: d
+- `28`: e
+- `29`: v
+- `30`: '
+- `31`: }
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [TWILIO Provider Documentation](https://www.serverless.com/framework/docs/providers/twilio/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

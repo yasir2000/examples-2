@@ -10,107 +10,137 @@ authorLink: 'https://github.com/rupakg'
 authorName: 'Rupak Ganguly'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/8188?v=4&s=140'
 -->
-# Serverless
 
-IMPORTANT NOTE: As pointed out in the [AWS documentation](http://docs.aws.amazon.com/lambda/latest/dg/env_variables.html) for storing sensible the `Ciphertext` should be stored in the environment variables. This tutorial doesn't go into that yet, but we will update it soon accordingly.
+# AWS Storing Encrypted Secrets example in NodeJS
 
 This example demonstrates how to store secrets like API keys encrypted in your repository while providing them as environment variables to your AWS Lambda functions.
 
-## Use-cases
+## Use Cases
 
-- Provide secrets like API keys to your Lambda functions
+- Serverless application development
 
-## Why?
+## Prerequisites
 
-While repository hosting services like Github or Bitbucket have very high security standards it's recommended to not store your unencrypted secrets there. In addition in larger teams not everybody needs to have access to those secrets of your production environment.
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-Encrypting your secrets per stage and only adding the encrypted files into your repository is a sensible strategy to fulfill the previously described goals. The passwords to decrypt and encrypt the secrets files should only be shared between the necessary developers over a secure channel. In case you are using a Continuous Integration to deploy your infrastructure obviously this system must be aware of the passwords as well.
+## Installation
 
-## Setup
-
-Since this plugin uses the Serverless plugin `serverless-secrets-plugin` you need to setup the `node_modules` by running:
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-## Usage
-
-### Decrypt and Deploy
-
-In order to deploy the you endpoint simply run
-
+Or using yarn:
 ```bash
-serverless deploy --stage dev
+yarn install
 ```
 
-The expected result should be similar to:
+## Local Development
 
+### Test individual functions
+
+Test a function locally:
 ```bash
- Error --------------------------------------------------
-
-    Couldn't find the secrets file for this stage: secrets.dev.yml
-
-    For debugging logs, run again after setting SLS_DEBUG env var.
-
- Get Support --------------------------------------------
-    Docs:          docs.serverless.com
-    Bugs:          github.com/serverless/serverless/issues
-
-    Please report this error. We think it might be a bug.
-
- Your Environment Information -----------------------------
-    OS:                 darwin
-    Node Version:       6.2.2
-    Serverless Version: 1.2.0
+serverless invoke local --function resetPassword
 ```
 
-This is happening since the `serverless-secrets-plugin` makes sure a secrets file for the specific stage exists.
+### Run with local development server
 
-Let's decrypt the secrets file so you can deploy the service. To do so run
-
+Start local development server:
 ```bash
-serverless decrypt --stage dev --password 'va$27dC}9382G7ac6?V'
+serverless offline
 ```
 
-The expected result should be similar to:
-
+Note: You may need to install serverless-offline plugin:
 ```bash
-Serverless: Sucessfully encrypted 'secrets.dev.yml.encrypted' to 'secrets.dev.yml'
+npm install --save-dev serverless-offline
 ```
 
-Now that you have the unencrypted version of your secrets file this directory you can deploy with
+## Deployment
 
+### Deploy to cloud
+
+Deploy the service:
 ```bash
-serverless deploy --stage dev
+serverless deploy
 ```
 
-### Encrypt
-
-In case you want to add, update or remove entries in your secrets file simply modify your secrets file. Once you are done encrypt it with
-
+Deploy a single function (faster for development):
 ```bash
-serverless encrypt --stage dev --password 'va$27dC}9382G7ac6?V'
+serverless deploy function --function functionName
 ```
 
-The expected result should be:
+### Deploy to specific stage/region
 
+Deploy to a specific stage:
 ```bash
-Serverless: Sucessfully encrypted 'secrets.dev.yml' to 'secrets.dev.yml.encrypted'
+serverless deploy --stage production
 ```
 
-The encrypted file can be checked into your version control system e.g. Git.
-
-### Decrypt and Encrypt the Production Secrets
-
+Deploy to a specific region:
 ```bash
-serverless decrypt --stage prod --password 'v2]83WDneGt9AGXv]X6QfP9NW3^J&K3V'
+serverless deploy --region eu-west-1
 ```
 
+### Usage Examples
+
+### View logs
+
+View function logs:
 ```bash
-serverless encrypt --stage prod --password 'v2]83WDneGt9AGXv]X6QfP9NW3^J&K3V'
+serverless logs --function resetPassword
 ```
 
-# Important Note
+Tail logs in real-time:
+```bash
+serverless logs --function resetPassword --tail
+```
 
-Make sure the the unencrypted secrets files are listed in .gitignore or similar to make sure they are never checked into your repository.
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

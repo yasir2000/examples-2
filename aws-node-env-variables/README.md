@@ -10,116 +10,141 @@ authorLink: 'https://github.com/rupakg'
 authorName: 'Rupak Ganguly'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/8188?v=4&s=140'
 -->
-# Serverless Environment Variables Usage
+
+# AWS Serverless Environment Variables Usage example in NodeJS
 
 This example demonstrates how to use environment variables for AWS Lambdas.
 
-## Use-cases
+## Use Cases
 
-- Provide settings as environment variables to your Lambda functions
+- Serverless application development
 
-## How it works
+## Prerequisites
 
-The first time you create or update Lambda functions that use environment variables in a region, a default service key is created for you automatically within AWS KMS. This key is used to encrypt environment variables.
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-When you create or update Lambda functions that use environment variables, AWS Lambda encrypts them using the AWS Key Management Service. When your Lambda function is invoked, those values are decrypted and made available to the Lambda code. Read more in the official AWS [docs](http://docs.aws.amazon.com/lambda/latest/dg/env_variables.html).
+## Installation
 
-## Setup
+Install dependencies:
 
-None needed.
+```bash
+npm install
+```
 
-## Deploy
+Or using yarn:
+```bash
+yarn install
+```
 
-In order to deploy the you endpoint simply run
+## Local Development
 
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function createUser
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The expected result should be similar to:
-
+Deploy a single function (faster for development):
 ```bash
-Serverless: Creating Stack…
-Serverless: Checking Stack create progress…
-.....
-Serverless: Stack create finished…
-Serverless: Packaging service…
-Serverless: Uploading CloudFormation file to S3…
-Serverless: Uploading service .zip file to S3…
-Serverless: Updating Stack…
-Serverless: Checking Stack update progress…
-................
-Serverless: Stack update finished…
-
-Service Information
-service: function-with-environment-variables
-stage: dev
-region: us-east-1
-api keys:
-  None
-endpoints:
-  None
-functions:
-  function-with-environment-variables-dev-resetPassword: arn:aws:lambda:us-east-1:377024778620:function:function-with-environment-variables-dev-resetPassword
-  function-with-environment-variables-dev-createUser: arn:aws:lambda:us-east-1:377024778620:function:function-with-environment-variables-dev-createUser
+serverless deploy function --function functionName
 ```
 
-## Usage
+### Deploy to specific stage/region
 
-You can now invoke each of the Lambdas directly and print their log statements via
-
+Deploy to a specific stage:
 ```bash
-serverless invoke --function=createUser --log
+serverless deploy --stage production
 ```
 
-The expected result should be similar to:
-
+Deploy to a specific region:
 ```bash
-{
-    "statusCode": 200,
-    "body": "{\"message\":\"User created\"}"
-}
---------------------------------------------------------------------
-START RequestId: 78b0785d-afd3-11e6-85a7abb1cd48ef Version: $LATEST
-2021 11:15:48.575 (+01:00)	78b0785d-afd3-11e6-85a7abb1cd48ef	PASSWORD_ITERATIONS:  4096
-2021 11:15:48.576 (+01:00)	78b0785d-afd3-11e6-85a7abb1cd48ef	PASSWORD_DERIVED_KEY_LENGTH:  256
-2021 11:15:48.576 (+01:00)	78b0785d-afd3-11e6-85a7abb1cd48ef	EMAIL_SERVICE_API_KEY:  KEYEXAMPLE1234
-END RequestId: 78b0785d-afd3-11e6-85a7abb1cd48ef
-REPORT RequestId: 78b0785d-afd3-11e6-85a7abb1cd48ef	Duration: 3.36 ms	Billed Duration: 100 ms 	Memory Size: 1024 MB	Max Memory Used: 15 MB
+serverless deploy --region eu-west-1
 ```
 
+### Usage Examples
+
+### View logs
+
+View function logs:
 ```bash
-serverless invoke --function=resetPassword --log
+serverless logs --function createUser
 ```
 
-The expected result should be similar to:
-
+Tail logs in real-time:
 ```bash
-{
-    "statusCode": 200,
-    "body": "{\"message\":\"Password sent.\"}"
-}
---------------------------------------------------------------------
-START RequestId: 9cc33dafd3-11e6-b919a4e146bf3d Version: $LATEST
-2021 11:16:48.838 (+01:00)	9cc33dafd3-11e6-b919a4e146bf3d	EMAIL_SERVICE_API_KEY:  KEYEXAMPLE1234
-END RequestId: 9cc33dafd3-11e6-b919a4e146bf3d
-REPORT RequestId: 9cc33dafd3-11e6-b919a4e146bf3d	Duration: 3.14 ms	Billed Duration: 100 ms 	Memory Size: 1024 MB	Max Memory Used: 15 MB
+serverless logs --function createUser --tail
 ```
 
-Especially helpful for local development you can also invoke the Lambda locally and see the resulting log via
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `EMAIL_SERVICE_API_KEY`: KEYEXAMPLE1234
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-serverless invoke local --function=createUser --log
+serverless remove
 ```
 
-The expected result should be similar to:
-
+Remove from specific stage:
 ```bash
-PASSWORD_ITERATIONS:  4096
-PASSWORD_DERIVED_KEY_LENGTH:  256
-EMAIL_SERVICE_API_KEY:  KEYEXAMPLE1234
-{
-    "statusCode": 200,
-    "body": "{\"message\":\"User created\"}"
-}
+serverless remove --stage production
 ```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

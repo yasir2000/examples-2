@@ -10,35 +10,94 @@ authorLink: 'https://github.com/allanchua101'
 authorName: 'Allan Chua'
 authorAvatar: 'https://avatars3.githubusercontent.com/u/26626798?s=460&v=4'
 -->
-# Shared AWS API Gateway
 
-Working on production projects would often require the usage of a shared API gateway between multiple Lambda functions. This repository showcases how to deploy multiple Lambda functions that are attached on a single API gateway.
+# Shared AWS API Gateway with multiple Node Lambdas
 
-## Add execution permission to CI deploy + decomission scripts.
+A sample of implementing shared API gateway with multiple Node Lambdas
 
-```sh
-chmod +x .\ci-deploy.sh
-chmod +x .\ci-decomission.sh
+## Use Cases
+
+- Serverless application development
+
+## Prerequisites
+
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+
+## Installation
+
+Install dependencies:
+
+# No additional installation steps required
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function functionName
 ```
 
-### Configure your AWS Deployment Account
+## Deployment
 
-Provide an AWS account that have sufficient access so that serverless can deploy the stack.
+### Deploy to cloud
 
-```sh
-serverless config credentials --provider aws --key YOUR_AWS_ACCESS_KEY --secret YOUR_AWS_SECRET_KEY
+Deploy the service:
+```bash
+serverless deploy
 ```
 
-# Deploying the API Gateway + Lambda Stack
-
-To deploy the
-
-```sh
-.\ci-deploy
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
 
-# Decomission all resources
+### Usage Examples
 
-```sh
-.\ci-decomission
+### View logs
+
+View function logs:
+```bash
+serverless logs --function functionName
 ```
+
+Tail logs in real-time:
+```bash
+serverless logs --function functionName --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [UNKNOWN Provider Documentation](https://www.serverless.com/framework/docs/providers/unknown/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

@@ -10,36 +10,131 @@ authorLink: 'https://github.com/jonatasbaldin'
 authorName: 'Jonatas Baldin'
 authorAvatar: 'https://avatars3.githubusercontent.com/u/8570364?v=4&s=140'
 -->
+
 # Serverless Telegram Bot
-This example demonstrates how to setup an echo Telegram Bot using the Serverless Framework ⚡🤖
 
-## Usage
+This example demonstrates how to use Serverless Framework with Python on AWS.
 
-### What do I need?
-- A AWS key configured locally, see [here](https://serverless.com/framework/docs/providers/aws/guide/credentials/).
-- NodeJS. I tested with v8.9.0.
-- A Telegram account.
+## Use Cases
 
-### Installing
-```
-# Install the Serverless Framework
-$ npm install serverless -g
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-# Install the necessary plugins
-$ npm install
+## Prerequisites
 
-# Get a bot from Telegram, sending this message to @BotFather
-$ /newbot
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Python](https://python.org/) (version 3.6 or higher)
+- pip package manager
 
-# Put the token received into a file called serverless.env.yml, like this
-$ cat serverless.env.yml
-TELEGRAM_TOKEN: <your_token>
+## Installation
 
-# Deploy it!
-$ serverless deploy
+Install dependencies:
 
-# With the URL returned in the output, configure the Webhook
-$ curl -X POST https://<your_url>.amazonaws.com/dev/set_webhook
+```bash
+pip install -r requirements.txt
 ```
 
-Now, just start a conversation with the bot :)
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function webhook
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function webhook
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function webhook --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `TELEGRAM_TOKEN`: ${file(./serverless.env.yml):TELEGRAM_TOKEN, ''}
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

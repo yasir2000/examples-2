@@ -10,64 +10,140 @@ authorLink: 'https://github.com/adambrgmn'
 authorName: 'Adam Bergman'
 authorAvatar: 'https://avatars1.githubusercontent.com/u/13746650?v=4&s=140'
 -->
-# Stripe Integration Example
+
+# AWS Stripe Integration example in NodeJS
 
 This example for Stripe integration using AWS Lambda and API Gateway.
 
 ## Use Cases
 
-- Notified about events that happen in a Stripe account.
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## Setup
+## Prerequisites
 
-### Install npm packages
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
+
+## Installation
+
+Install dependencies:
+
 ```bash
-$ npm install
+npm install
 ```
 
-### Edit config overrides for production deployment
+Or using yarn:
 ```bash
-$ vi config/local.yaml
+yarn install
 ```
 
-```yaml
-stripe:
-    test_sk: 'Stripe_Test_Secret_Key_here'
-    live_sk: 'Stripe_Live_Secret_Key_here'
-```
+## Local Development
 
-### Deploy!
+### Test individual functions
+
+Test a function locally:
 ```bash
-$ serverless deploy -v
+serverless invoke local --function incoming
 ```
 
-or production
-```bash:production
-$ serverless deploy -v --stage live
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
 ```
 
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
 ```
-Serverless: Packaging service...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading service .zip file to S3 (2.15 MB)...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-.....
-Serverless: Stack update finished...
-Serverless: Removing old service versions...
-Service Information
-service: aws-node-stripe-integration
-stage: development
-region: us-east-1
-api keys:
-  None
-endpoints:
-  POST - https://xxxxxxxxx.execute-api.us-east-1.amazonaws.com/test/stripe/incoming
-functions:
-  incoming: aws-node-stripe-integration-test-incoming
 
-Stack Outputs
-ServiceEndpoint: https://xxxxxxxxx.execute-api.us-east-1.amazonaws.com/test
-ServerlessDeploymentBucketName: aws-node-stripe-integration-serverlessdeploymentbuck-xxxxxxxxxxxx
-IncomingLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:000000000000:function:aws-node-stripe-integration-test-incoming:20
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
 ```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function incoming
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function incoming --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

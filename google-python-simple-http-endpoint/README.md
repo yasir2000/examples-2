@@ -11,90 +11,105 @@ authorName: 'Sebastian Borza'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/3159454?v=4&s=140'
 -->
 
-# Simple HTTP Endpoint Example
+# GCF Simple HTTP Endpoint example in Python
 
-This example demonstrates how to setup a simple python HTTP GET endpoint. When you fetch the endpoint we've set up here you'll see
-the time returned for the given request type.
+This example demonstrates how to use Serverless Framework with Python on GOOGLE.
 
 ## Use Cases
 
-- Wrapping an existing internal or external endpoint/service
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## Development
+## Prerequisites
 
-The GCF python runtime has a few requirements when defining your solution, in particular both a `requirements.txt` and your initial handler
-living in `main.py`. More details are listed here:
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [Google Cloud SDK](https://cloud.google.com/sdk) installed and configured
+- Valid Google Cloud credentials configured
+- [Python](https://python.org/) (version 3.6 or higher)
+- pip package manager
 
-https://cloud.google.com/functions/docs/concepts/python-runtime
+## Installation
 
-## Deploy
-
-In order to deploy the you endpoint simply run
-
-```bash
-serverless deploy -v
-```
-
-The expected result should be similar to:
+Install dependencies:
 
 ```bash
-Serverless: Uploading artifacts...
-Serverless: Artifacts successfully uploaded...
-Serverless: Updating deployment...
-Serverless: Checking deployment update progress...
-..............
-Serverless: Done...
-Service Information
-service: python-simple-http-endpoint
-project: <project_name>
-stage: dev
-region: <region>
-
-Deployed functions
-currentTime
-  https://<region>-<project_name>.cloudfunctions.net/endpoint
+pip install -r requirements.txt
 ```
 
-## Usage
+## Local Development
 
-You can now invoke the Cloud Function directly and even see the resulting log via
+### Test individual functions
 
+Test a function locally:
 ```bash
-serverless invoke --function currentTime
+serverless invoke local --function currentTime
 ```
 
-The expected result should be similar to:
+## Deployment
 
+### Deploy to cloud
+
+Deploy the service:
 ```bash
-Serverless: tudkstajertt {
-    "statusCode": 200,
-    "body": {
-        "message": "Received a POST request at 17:44:58.448696"
-    }
-}
+serverless deploy
 ```
 
-And to check out the logs directly from sls, you can run the following:
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
 
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
 ```bash
 serverless logs --function currentTime
-...
-Serverless: Displaying the 10 most recent log(s):
-
-2018-11-21T17:44:58.450200631Z: Function execution took 7 ms, finished with status code: 200
-2018-11-21T17:44:58.443618562Z: Function execution started
-2018-11-21T17:43:40.651063187Z: Function execution took 8 ms, finished with status code: 200
-2018-11-21T17:43:40.644123421Z: Function execution started
-2018-11-21T17:43:35.688702419Z: Function execution took 25 ms, finished with status code: 200
-2018-11-21T17:43:35.664212161Z: Function execution started
-2018-11-21T17:40:46.166468516Z: Function execution took 6 ms, finished with status code: 200
-2018-11-21T17:40:46.161422666Z: Function execution started
-2018-11-21T17:33:27.004019351Z: Function execution took 10 ms, finished with status code: 200
-2018-11-21T17:33:26.994600775Z: Function execution started
 ```
 
-Finally you can send an HTTP request directly to the endpoint using a tool like curl
+Tail logs in real-time:
+```bash
+serverless logs --function currentTime --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-curl https://<region>-<project_name>.cloudfunctions.net/endpoint
+serverless remove
 ```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [GOOGLE Provider Documentation](https://www.serverless.com/framework/docs/providers/google/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)
+- [Google Cloud Functions Documentation](https://cloud.google.com/functions/docs)

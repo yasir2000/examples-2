@@ -10,55 +10,122 @@ authorLink: 'https://github.com/pmuens'
 authorName: 'Philipp Muens'
 authorAvatar: 'https://avatars3.githubusercontent.com/u/1606004?v=4&s=140'
 -->
-# Pre-request 
-Follow below link to setup google account for deploying your first serveless application.
-[Google account setup](https://www.serverless.com/framework/docs/providers/google/guide/credentials/)
 
-# Simple HTTP example
+# GCF Simple HTTP Endpoint example in NodeJS
 
-# Setup
+This example demonstrates how to setup a simple HTTP GET endpoint.
 
-1. Install Serverless with `npm install -g serverless`
-2. Install the dependencies `npm install`
+## Use Cases
 
-# Setting the credentials and project
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-Update the `credentials` and your `project` property in the `serverless.yml` file.
+## Prerequisites
 
-# Deployment
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
+## Installation
+
+Install dependencies:
+
+```bash
+npm install
 ```
+
+Or using yarn:
+```bash
+yarn install
+```
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function helloWorld
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
 serverless deploy
 ```
 
-You should see your functions URL endpoint after the deployment
-
-# Invoking
-
-```
-curl <the-endpoint-url>
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
 
-# Caveats
+### Usage Examples
 
-# Below are the errors will occure during serveless deploy
-1. Enable Cloud Deployment Manager V2 API - make sure Cloud Deployment V2 API is enabled other wise you will get below error during serverless deployment 
-```
-Error: Cloud Deployment Manager V2 API has not been used in project <projectid> before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/deploymentmanager.googleapis.com/overview?project=<projectid> then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.
-```
-2. Enable Cloud Functions API - make sure Cloud Function API is enabled. Other wise you will get below error.
-``` 
-{"ResourceType":"cloudfunctions.v1beta2.function","ResourceErrorCode":"403","ResourceErrorMessage":{"code":403,"message":"Cloud Functions API has not been used in project <projectId> before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/cloudfunctions.googleapis.com/overview?project=<projectId> then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.","status":"PERMISSION_DENIED"
-```
-3. sls deploy --region us-central1 - provide region during sls or serverless deployment , other wise below rest endpoints will be created for your handler , example outof servlerless deployment console.
-```
-Service Information
-service: node-simple-http-endpoint
-project: <project name>
-stage: dev
-region: undefined
-Deployed functions
-helloWorld
-  https://undefined-<projectname>.cloudfunctions.net/http
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
 ```
 
+### View logs
+
+View function logs:
+```bash
+serverless logs --function helloWorld
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function helloWorld --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [GOOGLE Provider Documentation](https://www.serverless.com/framework/docs/providers/google/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

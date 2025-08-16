@@ -10,94 +10,140 @@ authorLink: 'https://github.com/adambrgmn'
 authorName: 'Adam Bergman'
 authorAvatar: 'https://avatars1.githubusercontent.com/u/13746650?v=4&s=140'
 -->
-# Data processing
 
-This example demonstrates how to setup a simple data processing pipeline. The service exposes one HTTP endpoint that allows you to add a text note. This HTTP endpoint returns instantly to provide a good user experience while the actual analysis is deferred. Only messages above a certain sentiment level are actually saved.
+# AWS Data Processing example in NodeJS
 
-Instead of invoking another Lambda function directly it's considered best practice to store the note as a message in a SNS queue. The queue has certain benefits compared to invoking the `analyzeNote` function directly. The queue supports retries in case the analyzeNote function fails as well as back-off to avoid too many concurrent invocations.
+This example demonstrates how to setup a simple data processing pipeline.
 
-## Setup
+## Use Cases
+
+- REST API backend
+- Microservices architecture
+- Serverless application development
+
+## Prerequisites
+
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
+
+## Installation
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-In order to use SNS you need to add your AWS account ID to config.js. There is already a placeholder: `XXXXXXXXXXXX`.
-
-You can retrieve the your account ID by running this command (you need the AWS SDK installed)
-
+Or using yarn:
 ```bash
-aws sts get-caller-identity --output text --query Account
+yarn install
 ```
 
-# Explanation
+## Local Development
 
-- sns topic will be added by default
+### Test individual functions
 
-## Deploy
+Test a function locally:
+```bash
+serverless invoke local --function addNote
+```
 
-In order to deploy the you endpoint simply run
+### Run with local development server
 
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The expected result should be similar to:
-
+Deploy a single function (faster for development):
 ```bash
-Serverless: Packaging service…
-Serverless: Uploading CloudFormation file to S3…
-Serverless: Uploading service .zip file to S3…
-Serverless: Updating Stack…
-Serverless: Checking Stack update progress…
-............
-Serverless: Stack update finished…
-Serverless: Removing old service versions…
-
-Service Information
-service: text-analysis-via-post-processing
-stage: dev
-region: us-east-1
-api keys:
-  None
-endpoints:
-  POST - https://5cvfn0wwv7.execute-api.us-east-1.amazonaws.com/dev/notes
-functions:
-  text-analysis-via-post-processing-dev-analyzeNote: arn:aws:lambda:us-east-1:377024778620:function:text-analysis-via-post-processing-dev-analyzeNote
-  text-analysis-via-post-processing-dev-addNote: arn:aws:lambda:us-east-1:377024778620:function:text-analysis-via-post-processing-dev-addNote
+serverless deploy function --function functionName
 ```
 
-## Usage
+### Deploy to specific stage/region
 
-In order to add a note run
-
+Deploy to a specific stage:
 ```bash
-curl -X POST https://XXXXXXXXX.execute-api.us-east-1.amazonaws.com/dev/notes --data '{ "note": "This is such a great Day" }'
+serverless deploy --stage production
 ```
 
-You should see the following output
-
+Deploy to a specific region:
 ```bash
-{"message":"Successfully added the note."}%
+serverless deploy --region eu-west-1
 ```
 
-To verify that the note has been processed run
+### Usage Examples
 
+Once deployed, you can test the HTTP endpoints:
 ```bash
-serverless logs --function analyzeNote
+curl https://your-api-gateway-url/dev/endpoint
 ```
 
-This command will show you the logged output and looks liked this
+### View logs
 
+View function logs:
 ```bash
-START RequestId: 75a970ba-ab11e6-809d-435833490828 Version: $LATEST
-2015 17:56:32.497 (+01:00)	75a970ba-ab11e6-809d-435833490828	Positive note - will be published: This is such a great Day
-END RequestId: 75a970ba-ab11e6-809d-435833490828
-REPORT RequestId: 75a970ba-ab11e6-809d-435833490828	Duration: 3.45 ms	Billed Duration: 100 ms 	Memory Size: 1024 MB	Max Memory Used: 15 MB
+serverless logs --function addNote
 ```
 
-You can play with the system and see which notes will be published and which won't.
+Tail logs in real-time:
+```bash
+serverless logs --function addNote --tail
+```
 
-# Scaling
+## Cleanup
 
-TODO
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

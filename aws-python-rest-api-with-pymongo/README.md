@@ -10,166 +10,135 @@ authorLink: 'https://github.com/gsweene2'
 authorName: 'Garrett Sweeney'
 authorAvatar: ''
 -->
-# aws-python-rest-api-with-pymongo
 
-## Create the Mongo Atlas backend
+# AWS Python Rest API with Pymongo
 
-1. Follow `Part 1: Cluster Creation` of [this artice](https://medium.com/swlh/creating-a-mongodb-cluster-and-inserting-a-document-with-python-ac90cc9d979c) to create a cluster on Mongo Atlas' Free Tier.
+AWS Python Rest API with Pymongo Example
 
-## Deploy the Serverless API to AWS
+## Use Cases
 
-1. Install Serverless
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-    ```
-    npm install -g serverless
-    ```
+## Prerequisites
 
-2. Install `serverless-python-requirements`
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Python](https://python.org/) (version 3.6 or higher)
+- pip package manager
 
-    ```
-    npm i --save serverless-python-requirements
-    ```
+## Installation
 
-3. Define necessary environment variables
+Install dependencies:
 
-    Append this to your ~/.bash_profile
-
-    ```
-    export MONGO_DB_USER=
-    export MONGO_DB_PASS=
-    export MONGO_DB_NAME=SampleDatabase
-    export MONGO_COLLECTION_NAME=SampleCollection
-    export MONGO_DB_URL=
-    ```
-
-4. Deploy the API
-
-    ```
-    sls deploy
-    ```
-
-    Your results should look something like this:
-    ```
-    Serverless: Stack update finished...
-    Service Information
-    service: serverless-pymongo-item-api
-    stage: dev
-    region: us-east-1
-    stack: serverless-pymongo-item-api-dev
-    resources: 28
-    api keys:
-      None
-    endpoints:
-      POST - https://0xfyi15qci.execute-api.us-east-1.amazonaws.com/dev/item
-      GET - https://0xfyi15qci.execute-api.us-east-1.amazonaws.com/dev/item
-      GET - https://0xfyi15qci.execute-api.us-east-1.amazonaws.com/dev/item/{id}
-      DELETE - https://0xfyi15qci.execute-api.us-east-1.amazonaws.com/dev/item/{id}
-    functions:
-      create: serverless-pymongo-item-api-dev-create
-      list: serverless-pymongo-item-api-dev-list
-      get: serverless-pymongo-item-api-dev-get
-      delete: serverless-pymongo-item-api-dev-delete
-    layers:
-      None
-    Serverless: Removing old service artifacts from S3...
-    Serverless: Run the "serverless" command to setup monitoring, troubleshooting and testing.
-    ```
-
-## Test the API by Creating and Querying items
-
-Substitute your endpoints into these curl commands to test the Create, Read, and Delete operations
-
-### CREATE
-
-```
-curl --request POST \
-  --url https://0xfyi15qci.execute-api.us-east-1.amazonaws.com/dev/item \
-  --header 'content-type: application/json' \
-  --data '{
-	"attribute_1": "Pet",
-	"attribute_2": "Rock"
-}'
+```bash
+pip install -r requirements.txt
 ```
 
-#### Expected Response
+## Local Development
 
-204 status
+### Test individual functions
 
-```
-{
-  "_id": "c6f03ca0-f792-11e9-9534-260a4b91bfe9",
-  "data": {
-    "attribute_1": "Pet",
-    "attribute_2": "Rock"
-  }
-}
+Test a function locally:
+```bash
+serverless invoke local --function create
 ```
 
-### GET
+## Deployment
 
-```
-curl --request GET \
-  --url https://0xfyi15qci.execute-api.us-east-1.amazonaws.com/dev/item/c6f03ca0-f792-11e9-9534-260a4b91bfe9 \
-  --header 'content-type: application/json'
-```
+### Deploy to cloud
 
-#### Expected Response
-
-200 status
-
-```
-{
-  "_id": "c6f03ca0-f792-11e9-9534-260a4b91bfe9",
-  "data": {
-    "attribute_1": "Pet",
-    "attribute_2": "Rock"
-  }
-}
+Deploy the service:
+```bash
+serverless deploy
 ```
 
-### LIST
-
-``` 
-curl --request GET \
-  --url https://0xfyi15qci.execute-api.us-east-1.amazonaws.com/dev/item \
-  --header 'content-type: application/json'
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
 
-### Expected Response
+### Deploy to specific stage/region
 
-200 status
-
-``` 
-{
-  "response_items": [
-    {
-      "_id": "c6f03ca0-f792-11e9-9534-260a4b91bfe9",
-      "data": {
-        "attribute_1": "Pet",
-        "attribute_2": "Rock"
-      }
-    },
-    {
-      "_id": "717c5f36-f799-11e9-a921-1e0e685be73c",
-      "data": {
-        "attribute_1": "Pete",
-        "attribute_2": "Rock"
-      }
-    }
-  ],
-  "filter": null
-}
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
 ```
 
-## Delete
-
-``` 
-curl --request DELETE \
-  --url https://0xfyi15qci.execute-api.us-east-1.amazonaws.com/dev/item/c6f03ca0-f792-11e9-9534-260a4b91bfe9 \
-  --header 'content-type: application/json'
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
 ```
 
-### Expected Response
+### Usage Examples
 
-204 status
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
 
+### View logs
+
+View function logs:
+```bash
+serverless logs --function create
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function create --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `MONGO_DB_USER`: ${env:MONGO_DB_USER}
+- `MONGO_DB_PASS`: ${env:MONGO_DB_PASS}
+- `MONGO_DB_NAME`: ${env:MONGO_DB_NAME}
+- `MONGO_DB_URL`: ${env:MONGO_DB_URL}
+- `MONGO_COLLECTION_NAME`: ${env:MONGO_COLLECTION_NAME}
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

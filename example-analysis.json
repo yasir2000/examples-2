@@ -1,0 +1,1870 @@
+[
+  {
+    "directory": "aws-dotnet-rest-api-with-dynamodb",
+    "hasServerlessYml": false,
+    "hasPackageJson": false,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "unknown",
+    "functions": [],
+    "events": []
+  },
+  {
+    "directory": "aws-ffmpeg-layer",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "mkgif"
+    ],
+    "events": [
+      "s3"
+    ]
+  },
+  {
+    "directory": "aws-golang-auth-examples",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Go",
+    "runtime": "go1.x",
+    "provider": "aws",
+    "functions": [
+      "authorize",
+      "authorize2",
+      "hello-world",
+      "hello-world2"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-golang-dynamo-stream-to-elasticsearch",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Go",
+    "runtime": "go1.x",
+    "provider": "aws",
+    "functions": [
+      "aws-golang-dynamo-stream-to-elasticsearch"
+    ],
+    "events": [
+      "stream"
+    ]
+  },
+  {
+    "directory": "aws-golang-googlemap",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "Go",
+    "runtime": "go1.x",
+    "provider": "aws",
+    "functions": [
+      "getgeolocation",
+      "getnearbylocation",
+      "getgeodetail"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-golang-http-get-post",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Go",
+    "runtime": "go1.x",
+    "provider": "aws",
+    "functions": [
+      "get",
+      "getquery",
+      "post"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-golang-rest-api-with-dynamodb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Go",
+    "runtime": "go1.x",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "update",
+      "delete"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-golang-s3-file-replicator",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "Go",
+    "runtime": "go1.x",
+    "provider": "aws",
+    "functions": [
+      "replicate"
+    ],
+    "events": [
+      "s3"
+    ]
+  },
+  {
+    "directory": "aws-golang-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Go",
+    "runtime": "go1.x",
+    "provider": "aws",
+    "functions": [
+      "hello",
+      "world"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-golang-stream-kinesis-to-elasticsearch",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Go",
+    "runtime": "go1.x",
+    "provider": "aws",
+    "functions": [
+      "streamer"
+    ],
+    "events": [
+      "stream"
+    ]
+  },
+  {
+    "directory": "aws-java-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "Java",
+    "runtime": "java8",
+    "provider": "aws",
+    "functions": [
+      "currentTime"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-multiple-runtime",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "aws",
+    "functions": [
+      "hello",
+      "time"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-node",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "JavaScript",
+    "runtime": "nodejs20.x",
+    "provider": "aws",
+    "functions": [
+      "hello"
+    ],
+    "events": []
+  },
+  {
+    "directory": "aws-node-alexa-skill",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "luckyNumber"
+    ],
+    "events": [
+      "0"
+    ]
+  },
+  {
+    "directory": "aws-node-auth0-cognito-custom-authorizers-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "publicEndpoint",
+      "auth",
+      "privateEndpoint"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-auth0-custom-authorizers-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "auth",
+      "publicEndpoint",
+      "privateEndpoint"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-cdk-extension",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "unknown",
+    "functions": [],
+    "events": []
+  },
+  {
+    "directory": "aws-node-dynamic-image-resizer",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "resize"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-dynamodb-backup",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "backup"
+    ],
+    "events": []
+  },
+  {
+    "directory": "aws-node-env-variables",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "createUser",
+      "resetPassword"
+    ],
+    "events": []
+  },
+  {
+    "directory": "aws-node-env-variables-encrypted-in-a-file",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "resetPassword"
+    ],
+    "events": []
+  },
+  {
+    "directory": "aws-node-express-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs20.x",
+    "provider": "aws",
+    "functions": [
+      "api"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-node-express-dynamodb-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs20.x",
+    "provider": "aws",
+    "functions": [
+      "api"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-node-fetch-file-and-store-in-s3",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "save"
+    ],
+    "events": []
+  },
+  {
+    "directory": "aws-node-fullstack",
+    "hasServerlessYml": false,
+    "hasPackageJson": false,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "unknown",
+    "functions": [],
+    "events": []
+  },
+  {
+    "directory": "aws-node-function-compiled-with-babel",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "hello"
+    ],
+    "events": []
+  },
+  {
+    "directory": "aws-node-github-check",
+    "hasServerlessYml": false,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "unknown",
+    "functions": [],
+    "events": []
+  },
+  {
+    "directory": "aws-node-github-webhook-listener",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "githubWebhookListener"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-graphql-and-rds",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "graphql",
+      "playground"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-graphql-api-with-dynamodb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs10.x",
+    "provider": "aws",
+    "functions": [
+      "query"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-heroku-postgres",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-http-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "JavaScript",
+    "runtime": "nodejs20.x",
+    "provider": "aws",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-node-http-api-dynamodb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "update",
+      "delete"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-node-http-api-dynamodb-local",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "update",
+      "delete"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-node-http-api-mongodb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "createUser",
+      "updateUser",
+      "deleteUser",
+      "user"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-node-http-api-typescript",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-node-http-api-typescript-dynamodb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "update"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-node-iot-event",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "log"
+    ],
+    "events": [
+      "iot"
+    ]
+  },
+  {
+    "directory": "aws-node-mongodb-atlas",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-oauth-dropbox-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "dropbox_step1",
+      "dropbox_step2"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-puppeteer",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-recursive-function",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "recursiveExample"
+    ],
+    "events": []
+  },
+  {
+    "directory": "aws-node-rekognition-analysis-s3-image",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "imageAnalysis"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-rest-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-rest-api-mongodb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "createUser",
+      "updateUser",
+      "deleteUser",
+      "user"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-rest-api-typescript",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "update",
+      "find",
+      "findOne",
+      "deleteOne"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-rest-api-typescript-simple",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-rest-api-with-dynamodb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs10.x",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "update",
+      "delete"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-rest-api-with-dynamodb-and-offline",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "update",
+      "delete"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-s3-file-replicator",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "replicate"
+    ],
+    "events": [
+      "s3"
+    ]
+  },
+  {
+    "directory": "aws-node-scheduled-cron",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "JavaScript",
+    "runtime": "nodejs20.x",
+    "provider": "aws",
+    "functions": [
+      "rateHandler"
+    ],
+    "events": [
+      "schedule"
+    ]
+  },
+  {
+    "directory": "aws-node-scheduled-weather",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "weather"
+    ],
+    "events": [
+      "schedule"
+    ]
+  },
+  {
+    "directory": "aws-node-serve-dynamic-html-via-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "landingPage"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-serverless-gong",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "handleGong"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-ses-receive-email-body",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "postprocess"
+    ],
+    "events": [
+      "s3"
+    ]
+  },
+  {
+    "directory": "aws-node-ses-receive-email-header",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "processheader",
+      "processacceptreject"
+    ],
+    "events": []
+  },
+  {
+    "directory": "aws-node-shared-gateway",
+    "hasServerlessYml": false,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "unknown",
+    "functions": [],
+    "events": []
+  },
+  {
+    "directory": "aws-node-signed-uploads",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "upsert-objects"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "currentTime"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-node-simple-transcribe-s3",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "transcribe"
+    ],
+    "events": [
+      "s3"
+    ]
+  },
+  {
+    "directory": "aws-node-single-page-app-via-cloudfront",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [],
+    "events": []
+  },
+  {
+    "directory": "aws-node-sqs-worker",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs20.x",
+    "provider": "aws",
+    "functions": [
+      "producer"
+    ],
+    "events": [
+      "sqs"
+    ]
+  },
+  {
+    "directory": "aws-node-stripe-integration",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "incoming"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-telegram-echo-bot",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "webhook"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-text-analysis-via-sns-post-processing",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "addNote",
+      "analyzeNote"
+    ],
+    "events": [
+      "http",
+      "sns"
+    ]
+  },
+  {
+    "directory": "aws-node-twilio-send-text-message",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "sendText"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-twitter-joke-bot",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "bot"
+    ],
+    "events": [
+      "schedule"
+    ]
+  },
+  {
+    "directory": "aws-node-typescript-apollo-lambda",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "graphql"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-typescript-kinesis",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "producer",
+      "consumer"
+    ],
+    "events": [
+      "http",
+      "stream"
+    ]
+  },
+  {
+    "directory": "aws-node-typescript-nest",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "main"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-typescript-rest-api-with-dynamodb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "update"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-typescript-sqs-standard",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs10.x",
+    "provider": "aws",
+    "functions": [
+      "sender",
+      "receiver"
+    ],
+    "events": [
+      "http",
+      "sqs"
+    ]
+  },
+  {
+    "directory": "aws-node-upload-to-s3-and-postprocess",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "postprocess"
+    ],
+    "events": [
+      "s3"
+    ]
+  },
+  {
+    "directory": "aws-node-vue-nuxt-ssr",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "nuxt"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-node-websockets-authorizers",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs12.x",
+    "provider": "aws",
+    "functions": [
+      "connect",
+      "default",
+      "auth"
+    ],
+    "events": [
+      "websocket"
+    ]
+  },
+  {
+    "directory": "aws-python",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "Python",
+    "runtime": "python3.12",
+    "provider": "aws",
+    "functions": [
+      "hello"
+    ],
+    "events": []
+  },
+  {
+    "directory": "aws-python-alexa-skill",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python2.7",
+    "provider": "aws",
+    "functions": [
+      "luckyNumber"
+    ],
+    "events": [
+      "0"
+    ]
+  },
+  {
+    "directory": "aws-python-auth0-custom-authorizers-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python3.6",
+    "provider": "aws",
+    "functions": [
+      "auth",
+      "publicEndpoint",
+      "privateEndpoint"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-python-flask-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python3.12",
+    "provider": "aws",
+    "functions": [
+      "api"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-python-flask-dynamodb-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python3.12",
+    "provider": "aws",
+    "functions": [
+      "api"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-python-http-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "Python",
+    "runtime": "python3.12",
+    "provider": "aws",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-python-http-api-with-dynamodb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python3.8",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "update",
+      "delete"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-python-http-api-with-pynamodb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python3.8",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "update",
+      "delete"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-python-line-echo-bot",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python3.7",
+    "provider": "aws",
+    "functions": [
+      "line_bot"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-python-pynamodb-s3-sigurl",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python3.6",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "bucket",
+      "list",
+      "get",
+      "update",
+      "delete"
+    ],
+    "events": [
+      "http",
+      "s3"
+    ]
+  },
+  {
+    "directory": "aws-python-rest-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "Python",
+    "runtime": "python3.8",
+    "provider": "aws",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-python-rest-api-with-dynamodb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python3.8",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "update",
+      "delete"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-python-rest-api-with-faunadb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python2.7",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "update",
+      "delete",
+      "schema"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-python-rest-api-with-pymongo",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python3.7",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "delete"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-python-rest-api-with-pynamodb",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python2.7",
+    "provider": "aws",
+    "functions": [
+      "create",
+      "list",
+      "get",
+      "update",
+      "delete"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-python-scheduled-cron",
+    "hasServerlessYml": true,
+    "hasPackageJson": false,
+    "language": "Python",
+    "runtime": "python3.12",
+    "provider": "aws",
+    "functions": [
+      "rateHandler"
+    ],
+    "events": [
+      "schedule"
+    ]
+  },
+  {
+    "directory": "aws-python-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python3.8",
+    "provider": "aws",
+    "functions": [
+      "currentTime"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-python-sqs-worker",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python3.12",
+    "provider": "aws",
+    "functions": [
+      "producer"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-python-telegram-bot",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python3.6",
+    "provider": "aws",
+    "functions": [
+      "webhook",
+      "set_webhook"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-ruby-cron-with-dynamodb",
+    "hasServerlessYml": false,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "unknown",
+    "functions": [],
+    "events": []
+  },
+  {
+    "directory": "aws-ruby-line-bot",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Ruby",
+    "runtime": "ruby2.7",
+    "provider": "aws",
+    "functions": [
+      "webhook"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-ruby-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Ruby",
+    "runtime": "ruby2.7",
+    "provider": "aws",
+    "functions": [
+      "current_time"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "aws-ruby-sinatra-dynamodb-api",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Ruby",
+    "runtime": "ruby2.7",
+    "provider": "aws",
+    "functions": [
+      "api"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "aws-ruby-sqs-with-dynamodb",
+    "hasServerlessYml": false,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "unknown",
+    "functions": [],
+    "events": []
+  },
+  {
+    "directory": "aws-ruby-step-functions",
+    "hasServerlessYml": false,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "unknown",
+    "functions": [],
+    "events": []
+  },
+  {
+    "directory": "aws-ruby-step-functions-express",
+    "hasServerlessYml": false,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "unknown",
+    "functions": [],
+    "events": []
+  },
+  {
+    "directory": "aws-ruby-step-functions-with-callback",
+    "hasServerlessYml": false,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "unknown",
+    "functions": [],
+    "events": []
+  },
+  {
+    "directory": "aws-rust-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Rust",
+    "runtime": "rust",
+    "provider": "aws",
+    "functions": [
+      "test_test"
+    ],
+    "events": [
+      "httpApi"
+    ]
+  },
+  {
+    "directory": "azure-node-line-bot",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "azure",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "azure-node-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "azure",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "azure-node-telegram-bot",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "azure",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "azure-node-typescript-servicebus-trigger-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs10",
+    "provider": "azure",
+    "functions": [
+      "sendMessage",
+      "sampleHandler"
+    ],
+    "events": [
+      "http",
+      "serviceBus"
+    ]
+  },
+  {
+    "directory": "compose-multiframework",
+    "hasServerlessYml": false,
+    "hasPackageJson": false,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "unknown",
+    "functions": [],
+    "events": []
+  },
+  {
+    "directory": "google-golang-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Go",
+    "runtime": "go111",
+    "provider": "google",
+    "functions": [
+      "hello"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "google-node-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs8",
+    "provider": "google",
+    "functions": [
+      "helloWorld"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "google-node-typescript-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "JavaScript",
+    "runtime": "nodejs",
+    "provider": "google",
+    "functions": [
+      "first"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "google-python-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python37",
+    "provider": "google",
+    "functions": [
+      "currentTime"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "google-ruby-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Ruby",
+    "runtime": "ruby27",
+    "provider": "google",
+    "functions": [
+      "simpleGet"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "kubeless-python-simple-function",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python2.7",
+    "provider": "kubeless",
+    "functions": [
+      "hello"
+    ],
+    "events": []
+  },
+  {
+    "directory": "kubeless-python-simple-scheduled-function",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python2.7",
+    "provider": "kubeless",
+    "functions": [
+      "clock"
+    ],
+    "events": [
+      "schedule"
+    ]
+  },
+  {
+    "directory": "openwhisk-go-simple",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "binary",
+    "provider": "openwhisk",
+    "functions": [
+      "greeting"
+    ],
+    "events": []
+  },
+  {
+    "directory": "openwhisk-node-and-docker-chaining-functions",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "openwhisk",
+    "functions": [
+      "location_from_address",
+      "sunrise_sunset",
+      "jq",
+      "location_sunrise_sunset"
+    ],
+    "events": []
+  },
+  {
+    "directory": "openwhisk-node-chaining-functions",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "openwhisk",
+    "functions": [
+      "split",
+      "reverse",
+      "join",
+      "chained_seq",
+      "manual_seq"
+    ],
+    "events": []
+  },
+  {
+    "directory": "openwhisk-node-scheduled-cron",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "openwhisk",
+    "functions": [
+      "cron"
+    ],
+    "events": [
+      "schedule"
+    ]
+  },
+  {
+    "directory": "openwhisk-node-simple",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "openwhisk",
+    "functions": [
+      "hello_world",
+      "left_pad",
+      "delay"
+    ],
+    "events": [
+      "trigger"
+    ]
+  },
+  {
+    "directory": "openwhisk-node-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "openwhisk",
+    "functions": [
+      "time"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "openwhisk-php-simple",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "php",
+    "provider": "openwhisk",
+    "functions": [
+      "greeting"
+    ],
+    "events": []
+  },
+  {
+    "directory": "openwhisk-python-scheduled-cron",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python:3",
+    "provider": "openwhisk",
+    "functions": [
+      "cron"
+    ],
+    "events": [
+      "schedule"
+    ]
+  },
+  {
+    "directory": "openwhisk-python-simple",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python:3",
+    "provider": "openwhisk",
+    "functions": [
+      "greeting"
+    ],
+    "events": []
+  },
+  {
+    "directory": "openwhisk-python-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Python",
+    "runtime": "python:3",
+    "provider": "openwhisk",
+    "functions": [
+      "currentTime"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "openwhisk-ruby-simple",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "Ruby",
+    "runtime": "ruby",
+    "provider": "openwhisk",
+    "functions": [
+      "greeting"
+    ],
+    "events": []
+  },
+  {
+    "directory": "openwhisk-rust-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "binary",
+    "provider": "openwhisk",
+    "functions": [
+      "test_test"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "openwhisk-swift-precompiled-binaries",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "swift",
+    "provider": "openwhisk",
+    "functions": [
+      "hello",
+      "welcome"
+    ],
+    "events": []
+  },
+  {
+    "directory": "openwhisk-swift-scheduled-cron",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "swift",
+    "provider": "openwhisk",
+    "functions": [
+      "cron"
+    ],
+    "events": [
+      "schedule"
+    ]
+  },
+  {
+    "directory": "openwhisk-swift-simple",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "swift",
+    "provider": "openwhisk",
+    "functions": [
+      "ping"
+    ],
+    "events": []
+  },
+  {
+    "directory": "openwhisk-swift-simple-http-endpoint",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "swift",
+    "provider": "openwhisk",
+    "functions": [
+      "time"
+    ],
+    "events": [
+      "http"
+    ]
+  },
+  {
+    "directory": "twilio-node-forward-call",
+    "hasServerlessYml": true,
+    "hasPackageJson": true,
+    "language": "unknown",
+    "runtime": "unknown",
+    "provider": "twilio",
+    "functions": [
+      "forward-call"
+    ],
+    "events": []
+  }
+]

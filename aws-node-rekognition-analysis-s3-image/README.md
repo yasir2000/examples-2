@@ -10,92 +10,140 @@ authorLink: 'https://github.com/ScottBrenner'
 authorName: 'Scott Brenner'
 authorAvatar: 'https://avatars2.githubusercontent.com/u/416477?v=4&s=140'
 -->
-# Analyse Image from S3 with Amazon Rekognition Example
+
+# AWS Analyse Image from S3 with Amazon Rekognition example in NodeJS
 
 This example shows how to analyze an image in an S3 bucket with Amazon Rekognition and return a list of labels.
 
-## Use-cases
+## Use Cases
 
-- Determine if there is a cat in an image.
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## Setup
+## Prerequisites
 
-You need to create an S3 bucket and upload at least one file. Be sure the permissions on the folder and file allow public access and that CORS is configured to allow access.
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
+
+## Installation
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-## Deploy
+Or using yarn:
+```bash
+yarn install
+```
 
-In order to deploy the function run:
+## Local Development
 
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function imageAnalysis
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The expected result should be similar to:
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function imageAnalysis
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function imageAnalysis --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-Serverless: Packaging service...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading service .zip file to S3 (3.78 MB)...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-..............
-Serverless: Stack update finished...
-Service Information
-service: rekognition-analysis-s3-image
-stage: dev
-region: us-east-1
-api keys:
-  None
-endpoints:
-  POST - https://6bbhhv5q22.execute-api.us-east-1.amazonaws.com/dev/analysis
-functions:
-  imageAnalysis: rekognition-analysis-s3-image-dev-imageAnalysis
+serverless remove
 ```
 
-## Usage
-
-You can now send an HTTP POST request directly to the endpoint using a tool like curl
-
-```
-{
-  "bucket": "mycatphotos",
-  "imageName": "cat.jpg"
-}
-```
-
+Remove from specific stage:
 ```bash
-serverless invoke local -f imageAnalysis -p post.json
+serverless remove --stage production
 ```
 
-The expected result should be similar to:
+## Troubleshooting
 
-```json
-{
-    "Labels": [
-        {
-            "Confidence": 96.59198760986328,
-            "Name": "Animal"
-        },
-        {
-            "Confidence": 96.59198760986328,
-            "Name": "Cat"
-        },
-        {
-            "Confidence": 96.59198760986328,
-            "Name": "Pet"
-        },
-        {
-            "Confidence": 96.59198760986328,
-            "Name": "Siamese"
-        }
-    ]
-}
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
 ```
 
-## Scaling
+### AWS Specific Issues
 
-By default, AWS Lambda limits the total concurrent executions across all functions within a given region to 100. The default limit is a safety limit that protects you from costs due to potential runaway or recursive functions during initial development and testing. To increase this limit above the default, follow the steps in [To request a limit increase for concurrent executions](http://docs.aws.amazon.com/lambda/latest/dg/concurrent-executions.html#increase-concurrent-executions-limit).
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

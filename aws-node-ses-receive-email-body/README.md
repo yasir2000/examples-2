@@ -10,89 +10,141 @@ authorLink: 'https://github.com/aheissenberger'
 authorName: 'Andreas Heissenberger'
 authorAvatar: 'https://avatars2.githubusercontent.com/u/200095?v=4&s=140'
 -->
-# Receive an email, store in S3 bucket, trigger a lambda function
 
-This example shows how to receive an email with SES, store the email including the body on S3 and have S3
-trigger a lambda function.
+# AWS SES receive emails and process body
 
-## Use-cases
+This example shows how to process receiving emails, and have S3 trigger a lambda function.
 
-- Postprocess of email body.
+## Use Cases
 
-## Setup
+- File processing and transformation
+- Event-driven data processing
+- Serverless application development
 
-- [Create a SES verified Domain](https://docs.aws.amazon.com/ses/latest/DeveloperGuide/receiving-email-getting-started-verify.html) but do not setup the "Rule Set"
-- Edit `serverless.yml` and choose a unique S3 bucket name but follow the [normalizing Rules](https://serverless.com/framework/docs/providers/aws/guide/resources#aws-cloudformation-resource-reference) to allow to use the name for the `bucketRef`. To keep it working use a name which  contains only the characters a-z. The `bucketRef` is the constant string `S3Bucket` plus the `bucket` name with the first letter uppercase.
-- if you change the region check if SES receiving exists in your region
+## Prerequisites
 
-## Deploy
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-In order to deploy the example, simply run:
+## Installation
 
+Install dependencies:
+
+```bash
+npm install
+```
+
+Or using yarn:
+```bash
+yarn install
+```
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
+```bash
+serverless invoke local --function postprocess
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The output should look similar to:
-
-```
-Serverless: Packaging service...
-Serverless: Excluding development dependencies...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading artifacts...
-Serverless: Uploading service .zip file to S3 (2.69 KB)...
-Serverless: Validating template...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-........................
-Serverless: Stack update finished...
-Service Information
-service: aws-node-ses-receive-email-body
-stage: dev
-region: eu-west-1
-stack: aws-node-ses-receive-email-body-dev
-api keys:
-  None
-endpoints:
-  None
-functions:
-  postprocess: aws-node-ses-receive-email-body-dev-postprocess
-
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
 ```
 
-## Setup SNS Email Receiving Rule
+### Deploy to specific stage/region
 
-1) Open the Amazon SES console at https://console.aws.amazon.com/ses/
-2) In the navigation pane, under Email Receiving, choose Rule Sets.
-3) Choose **Create a Receipt Rule**.
-4) On the Recipients page, choose **Next Step**. (Without a adding any recipients, Amazon SES applies this rule to all recipients)
-5) For **Add action**, choose **S3**.
-6) For **S3 bucket**,choose **Enter a bucket name** and select the bucket with the name you defined in `serverless.yml`
-7) Choose **Next Step**
-8) On the **Rule Details** page, for **Rule name**, type **my-rule**. Select the check box next to **Enabled**, and then choose **Next Step**.
-9) On the **Review** page, choose **Create Rule**.
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
 
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
 
-## Usage
+### Usage Examples
 
-Send a test email to the receipient.
+This function is triggered by S3 events. Upload a file to the configured bucket to trigger execution.
 
-You should see a new S3 object in the bucket which contains the whole email body.
+### View logs
 
-After a while, the postprocess function gets triggerd by an S3 event:
-
+View function logs:
 ```bash
 serverless logs --function postprocess
 ```
 
+Tail logs in real-time:
+```bash
+serverless logs --function postprocess --tail
 ```
-START RequestId: 695a6fa8-a711e8-ab5d-0fdb1ebfe5ea Version: $LATEST
-<date> <RequestId> date: 2003T18:46:47.000Z
-<date> <RequestId> subject: Test Subject
-<date> <RequestId> body: Hello World
 
-<date> <RequestId> from: Tim Turbo <tim.turbo@domain.test>
-<date> <RequestId> attachments: []
-END RequestId: 695a6fa8-a711e8-ab5d-0fdb1ebfe5ea
-REPORT RequestId: 695a6fa8-a711e8-ab5d-0fdb1ebfe5ea  Duration: 55.12 ms Billed Duration: 100 ms  Memory Size: 1024 MB    Max Memory Used: 42 MB
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
 ```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

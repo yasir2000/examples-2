@@ -10,42 +10,102 @@ authorLink: 'https://github.com/fiveisprime'
 authorName: 'Matt Hernandez'
 authorAvatar: 'https://avatars2.githubusercontent.com/u/1186948?v=4&s=140'
 -->
-# Simple HTTP example
 
-In this example, we deploy an HTTP Node.js Azure Function. This sample show you
-how to read properties off of a query string or the request body, then set a
-result back to Azure.
+# Azure Simple HTTP Endpoint example in NodeJS
 
-See the [Azure Functions Serverless Plugin docs](https://www.serverless.com/framework/docs/providers/azure/) for more info.
+In this example, we deploy an HTTP Node.js Azure Function. This example shows you how to read properties off of a query string or the request body, then set a result back to Azure.
 
-_Note: you may need to change the `service` name in `serverless.yml`_
+## Use Cases
 
-## Setup
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-1. We recommend Node.js v6.5.0
-2. Install the serverless framework - `npm install -g serverless`
-3. Install the dependencies of this example - `npm install`
+## Prerequisites
 
-## Deploying
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/) installed and configured
+- Valid Azure credentials configured
 
-To deploy, use the `deploy` and follow the instructions to log into your Azure
-account.
+## Installation
 
+Install dependencies:
+
+# No additional installation steps required
+
+## Local Development
+
+### Test individual functions
+
+Test a function locally:
 ```bash
-$ serverless deploy
-Serverless: Packaging service...
-Serverless: Logging in to Azure
-Serverless: Paste this code (copied to your clipboard) into the launched browser, and complete the authentication process: BLAZSRMVJ
+serverless invoke local --function hello
 ```
 
-Once authenticated, the session will continue and deploy the app.
+## Deployment
 
-## Invoking
+### Deploy to cloud
 
-Invoke the deployed function using the `invoke` command.
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function hello
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function hello --tail
+```
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-$ serverless invoke -f hello -d "{ \"name\": \"World\" }"
-Serverless: Logging in to Azure
-"Hello World"
+serverless remove
 ```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AZURE Provider Documentation](https://www.serverless.com/framework/docs/providers/azure/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)
+- [Azure Functions Documentation](https://docs.microsoft.com/en-us/azure/azure-functions/)

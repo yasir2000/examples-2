@@ -10,102 +10,153 @@ authorLink: 'https://github.com/rupakg'
 authorName: 'Rupak Ganguly'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/8188?v=4&s=140'
 -->
-# AWS Node Scheduled Weather Example
 
-This is an example of creating a function that runs as a cron job using the serverless `schedule` event. It retrieves weather information at 10am (UTC) and emails it to a predefined recipient. For more information on `schedule` event check out the Serverless docs on [schedule](https://serverless.com/framework/docs/providers/aws/events/schedule/).
+# AWS Node Scheduled Weather example in NodeJS
 
-## Cron syntax
+This is an example of creating a function that runs as a cron job using the serverless 
 
-```pseudo
-cron(Minutes Hours Day-of-month Month Day-of-week Year)
+## Use Cases
+
+- Scheduled tasks and cron jobs
+- Background processing
+- Serverless application development
+
+## Prerequisites
+
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
+
+## Installation
+
+Install dependencies:
+
+```bash
+npm install
 ```
 
-All fields are required and time zone is UTC only.
-
-| Field         | Values         | Wildcards     |
-| ------------- |:--------------:|:-------------:|
-| Minutes       | 0-59           | , - * /       |
-| Hours         | 0-23           | , - * /       |
-| Day-of-month  | 1-31           | , - * ? / L W |
-| Month         | 1-12 or JAN-DEC| , - * /       |
-| Day-of-week   | 1-7 or SUN-SAT | , - * ? / L # |
-| Year          | 192199      | , - * /       |
-
-Read the [AWS cron expression syntax](http://docs.aws.amazon.com/lambda/latest/dg/tutorial-scheduled-events-schedule-expressions.html) docs for more info on how to setup cron
-
-## Setup
-
-### DarkSky
-
-Please visit https://darksky.net/dev/ to register for a free API token.
-
-### Postmark
-
-Please visit https://postmarkapp.com to register for a free Postmark account.
-
-### Configuration
-
-Upon setting up access to both external services, you'll be required to update the environment variables in `serverless.yml`:
-
-```
-environment:
-  RECIPIENT: tom@carrotcreative.com
-  DARK_SKY_API_KEY: abc123
-  POSTMARK_API_KEY: abc123
-  POSTMARK_SENDER: devops@carrotcreative.com
-  LATITUDE: 40.702637
-  LONGITUDE: -73.989406
+Or using yarn:
+```bash
+yarn install
 ```
 
-## Deploy
+## Local Development
 
-In order to deploy the you endpoint simply run
+### Test individual functions
 
+Test a function locally:
+```bash
+serverless invoke local --function weather
+```
+
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
 ```bash
 serverless deploy
 ```
 
-The expected result should be similar to:
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+This function runs on a schedule. Check CloudWatch logs for execution:
+```bash
+serverless logs --function functionName
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function weather
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function weather --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `RECIPIENT`: tom@carrotcreative.com
+- `DARK_SKY_API_KEY`: abc123
+- `POSTMARK_API_KEY`: abc123
+- `POSTMARK_SENDER`: devops@carrotcreative.com
+- `LATITUDE`: 40.702637
+- `LONGITUDE`: -73.989406
+
+## Cleanup
+
+Remove the deployed service and all resources:
 
 ```bash
-Serverless: Packaging service...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading service .zip file to S3 (1.87 MB)...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-...........
-Serverless: Stack update finished...
-Serverless: Removing old service versions...
-Service Information
-service: scheduled-weather-example
-stage: dev
-region: us-east-1
-api keys:
-  None
-endpoints:
-  None
-functions:
-  scheduled-weather-example-dev-weather: arn:aws:lambda:us-east-1:219106525755:function:scheduled-weather-example-dev-weather
+serverless remove
 ```
 
-There is no additional step required. Your defined schedule becomes active right away after deployment.
-
-## Usage
-
-To test your function remotely:
-
+Remove from specific stage:
 ```bash
-sls invoke -f weather  
+serverless remove --stage production
 ```
 
-The expected result should be similar to:
+## Troubleshooting
 
-```json
-{
-  "success": true
-}
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
 ```
 
-## Additonal Resources
+### AWS Specific Issues
 
-For more information on running cron with Serverless check out the [Tutorial: Serverless Scheduled Tasks](https://parall.ax/blog/view/3202/tutorial-serverless-scheduled-tasks) by Parallax.
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

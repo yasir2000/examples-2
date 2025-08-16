@@ -13,34 +13,153 @@ authorAvatar: 'https://avatars3.githubusercontent.com/u/40777040?v=4&s=140'
 
 # A Simple Serverless GraphQL API for MySQL, Postgres and Aurora
 
-This is an example project using the [Serverless framework](https://serverless.com/framework/), Node.js and [Amazon RDS](https://aws.amazon.com/rds/).
+This is an example project that uses 3 RDS databases to illustrate the differences between using each of them
 
-This project uses 3 RDS databases to illustrate the differences between using each of them:
+## Use Cases
 
-* MySQL
-* PostgreSQL
-* MySQL-compatible Amazon Aurora
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-## How to Deploy This Project
+## Prerequisites
 
-### Pre-Requisites
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-To deploy this GraphQL API, you’ll need the following:
+## Installation
 
-* An AWS account.
-* [AWS CLI](https://aws.amazon.com/cli/) installed locally.
-* API credentials for your AWS account configured in your AWS CLI locally by running `aws configure`.
-* Serverless framework installed locally via `npm -g install serverless`.
+Install dependencies:
 
-### Steps to Deploy
+```bash
+npm install
+```
 
-Once all pre-requisite items are ready, follow these steps to deploy this example GraphQL API:
+Or using yarn:
+```bash
+yarn install
+```
 
-1. Run `npm install` to install all the necessary dependencies.
-2. Run `npm run deploy` to deploy the stack.
+## Local Development
 
-### Steps to Remove All Resources
+### Test individual functions
 
-After you’ve finished working with this example, remove all resources to make sure you’re not getting billed for unused RDS databases.
+Test a function locally:
+```bash
+serverless invoke local --function graphql
+```
 
-Run `npm run remove` to remove all resources.
+### Run with local development server
+
+Start local development server:
+```bash
+serverless offline
+```
+
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function graphql
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function graphql --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `AURORA_HOST`: ${self:custom.AURORA.HOST}
+- `AURORA_PORT`: ${self:custom.AURORA.PORT}
+- `MYSQL_HOST`: ${self:custom.MYSQL.HOST}
+- `MYSQL_PORT`: ${self:custom.MYSQL.PORT}
+- `POSTGRESQL_HOST`: ${self:custom.POSTGRESQL.HOST}
+- `POSTGRESQL_PORT`: ${self:custom.POSTGRESQL.PORT}
+- `DB_NAME`: ${self:custom.DB_NAME}
+- `USERNAME`: ${self:custom.USERNAME}
+- `PASSWORD`: ${self:custom.PASSWORD}
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)

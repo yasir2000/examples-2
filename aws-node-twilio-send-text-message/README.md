@@ -10,59 +10,150 @@ authorLink: 'https://github.com/darrenhgc'
 authorName: 'Darren Holland'
 authorAvatar: 'https://avatars0.githubusercontent.com/u/28113106?v=4&s=140'
 -->
-# Send SMS Message with Twilio
 
-<img align="right" width="316" height="103" src="https://s3-us-west-2.amazonaws.com/assets.site.serverless.com/blog/twilio-logo.jpg">
+# AWS Send SMS Message with Twilio example in NodeJS
+
 This example demonstrates how to send SMS messages with the Twilio SDK and AWS lambda.
 
-[Live the live demo](http://twilio-serverless-example.surge.sh)
+## Use Cases
 
-## Use Cases:
+- REST API backend
+- Microservices architecture
+- Serverless application development
 
-* Sending users confirmation text messages
+## Prerequisites
 
-## Setup
+- [Serverless Framework](https://www.serverless.com/framework/docs/getting-started) installed
+- [AWS CLI](https://aws.amazon.com/cli/) configured (if using AWS)
+- Valid cloud provider credentials configured
+- [Node.js](https://nodejs.org/) (version 12.x or higher)
+- npm or yarn package manager
 
-1. Sign up for a [Twilio account](http://www.twilio.com)
+## Installation
 
-2. Create a [new phone number](https://www.twilio.com/console/phone-numbers/) in your Twilio trial account
+Install dependencies:
 
-3. Grab your ACCOUNT SID and AUTH TOKEN from the [Twilio console](https://www.twilio.com/console) and plug those into the `serverless.yml` file in the next step
+```bash
+npm install
+```
 
-4. Set your `env` variables in `serverless.yml` with your Twilio account values
+Or using yarn:
+```bash
+yarn install
+```
 
-      ```yml
-      environment:
-        # replace these env variables with your twilio account values
-        TWILIO_ACCOUNT_SID: YOUR-TWILIO-ACCOUNT-SID-HERE
-        TWILIO_AUTH_TOKEN: YOUR-TWILIO-AUTH-TOKEN-HERE
-        TWILIO_PHONE_NUMBER: YOUR-TWILIO-PHONE-NUMBER-HERE
-      ```
-    
-      If you want to use encrypted API keys, see our [encrypted environment variables example](https://github.com/serverless/examples/tree/master/aws-node-env-variables-encrypted-in-a-file)
-      
-5. Install the dependencies required by the service 
-      ```bash
-      npm i --only=prod
-      ```
-      
-6. Deploy the service 
-      ```bash
-      serverless deploy
-      ```
+## Local Development
 
-7. Invoke the function and send an SMS message
+### Test individual functions
 
-      Update the `to` phone number the `event.json` file and `message` to send in the SMS
-    
-      Then invoke the function with the serverless CLI. Set the `--path event.json` so the function knows where to send the SMS.
-    
-      ```bash
-      serverless invoke -f sendText --path event.json
-      ```
+Test a function locally:
+```bash
+serverless invoke local --function sendText
+```
 
-8. (Optional) Deploy the front-end application
+### Run with local development server
 
-  Update the `API_ENDPOINT` variable in the `/frontend/index.html` file and deploy the `/frontend` folder to a static host of your choice.
+Start local development server:
+```bash
+serverless offline
+```
 
-  We recommend S3, [netlify](https://www.netlify.com/), or [surge.sh](http://surge.sh/) for quick and easy static site hosting.
+Note: You may need to install serverless-offline plugin:
+```bash
+npm install --save-dev serverless-offline
+```
+
+## Deployment
+
+### Deploy to cloud
+
+Deploy the service:
+```bash
+serverless deploy
+```
+
+Deploy a single function (faster for development):
+```bash
+serverless deploy function --function functionName
+```
+
+### Deploy to specific stage/region
+
+Deploy to a specific stage:
+```bash
+serverless deploy --stage production
+```
+
+Deploy to a specific region:
+```bash
+serverless deploy --region eu-west-1
+```
+
+### Usage Examples
+
+Once deployed, you can test the HTTP endpoints:
+```bash
+curl https://your-api-gateway-url/dev/endpoint
+```
+
+### View logs
+
+View function logs:
+```bash
+serverless logs --function sendText
+```
+
+Tail logs in real-time:
+```bash
+serverless logs --function sendText --tail
+```
+
+## Configuration
+
+This service can be configured using environment variables or serverless.yml custom section.
+
+### Environment Variables
+
+- `TWILIO_ACCOUNT_SID`: YOUR-TWILIO-ACCOUNT-SID-HERE
+- `TWILIO_AUTH_TOKEN`: YOUR-TWILIO-AUTH-TOKEN-HERE
+- `TWILIO_PHONE_NUMBER`: YOUR-TWILIO-PHONE-NUMBER-HERE
+
+## Cleanup
+
+Remove the deployed service and all resources:
+
+```bash
+serverless remove
+```
+
+Remove from specific stage:
+```bash
+serverless remove --stage production
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**: Ensure your cloud provider credentials have necessary permissions
+2. **Timeout Issues**: Increase function timeout in serverless.yml if needed
+3. **Memory Issues**: Increase function memory allocation in serverless.yml
+
+### Debug Mode
+
+Enable debug mode for more verbose output:
+```bash
+SLS_DEBUG=* serverless deploy
+```
+
+### AWS Specific Issues
+
+- **Region Issues**: Ensure you're deploying to the correct AWS region
+- **IAM Permissions**: Check that your AWS credentials have necessary IAM permissions
+- **VPC Configuration**: If using VPC, ensure proper subnet and security group configuration
+
+## Additional Resources
+
+- [Serverless Framework Documentation](https://www.serverless.com/framework/docs/)
+- [AWS Provider Documentation](https://www.serverless.com/framework/docs/providers/aws/)
+- [Serverless Examples Repository](https://github.com/serverless/examples)
