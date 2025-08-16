@@ -19,7 +19,7 @@ function parseServerlessConfig(dir) {
   if (!fs.existsSync(serverlessPath)) {
     return null;
   }
-  
+
   try {
     const content = fs.readFileSync(serverlessPath, 'utf8');
     return yaml.load(content);
@@ -32,9 +32,9 @@ function parseServerlessConfig(dir) {
 // Detect runtime/language from serverless.yml
 function detectLanguageAndRuntime(config) {
   if (!config || !config.provider) return { language: 'unknown', runtime: 'unknown' };
-  
+
   const runtime = config.provider.runtime || 'unknown';
-  
+
   // Map runtime to language
   const languageMap = {
     'nodejs': 'JavaScript',
@@ -46,13 +46,13 @@ function detectLanguageAndRuntime(config) {
     'ruby': 'Ruby',
     'rust': 'Rust'
   };
-  
+
   for (const [key, lang] of Object.entries(languageMap)) {
     if (runtime.toLowerCase().includes(key)) {
       return { language: lang, runtime };
     }
   }
-  
+
   return { language: 'unknown', runtime };
 }
 
@@ -62,7 +62,7 @@ function checkPackageJson(dir) {
   if (!fs.existsSync(packagePath)) {
     return null;
   }
-  
+
   try {
     const content = fs.readFileSync(packagePath, 'utf8');
     return JSON.parse(content);
@@ -74,11 +74,11 @@ function checkPackageJson(dir) {
 // Analyze each example
 function analyzeExample(dir) {
   console.log(`\nAnalyzing: ${dir}`);
-  
+
   const config = parseServerlessConfig(dir);
   const packageJson = checkPackageJson(dir);
   const { language, runtime } = detectLanguageAndRuntime(config);
-  
+
   const analysis = {
     directory: dir,
     hasServerlessYml: !!config,
@@ -89,7 +89,7 @@ function analyzeExample(dir) {
     functions: config?.functions ? Object.keys(config.functions) : [],
     events: []
   };
-  
+
   // Extract event types
   if (config?.functions) {
     Object.values(config.functions).forEach(func => {
@@ -103,12 +103,12 @@ function analyzeExample(dir) {
       }
     });
   }
-  
+
   console.log(`  Language: ${language} (${runtime})`);
   console.log(`  Provider: ${analysis.provider}`);
   console.log(`  Functions: ${analysis.functions.join(', ')}`);
   console.log(`  Events: ${analysis.events.join(', ')}`);
-  
+
   return analysis;
 }
 
@@ -116,9 +116,9 @@ function analyzeExample(dir) {
 function main() {
   const examples = getExampleDirectories();
   console.log(`Found ${examples.length} example directories`);
-  
+
   const analyses = [];
-  
+
   examples.forEach(dir => {
     try {
       const analysis = analyzeExample(dir);
@@ -127,20 +127,20 @@ function main() {
       console.error(`Error analyzing ${dir}: ${error.message}`);
     }
   });
-  
+
   // Write analysis to file
   fs.writeFileSync('example-analysis.json', JSON.stringify(analyses, null, 2));
   console.log('\nAnalysis written to example-analysis.json');
-  
+
   // Summary
   const byLanguage = {};
   const byProvider = {};
-  
+
   analyses.forEach(analysis => {
     byLanguage[analysis.language] = (byLanguage[analysis.language] || 0) + 1;
     byProvider[analysis.provider] = (byProvider[analysis.provider] || 0) + 1;
   });
-  
+
   console.log('\nSummary:');
   console.log('By Language:', byLanguage);
   console.log('By Provider:', byProvider);

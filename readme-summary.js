@@ -23,10 +23,10 @@ const byEventType = {};
 analyses.forEach(analysis => {
   // Count languages
   byLanguage[analysis.language] = (byLanguage[analysis.language] || 0) + 1;
-  
+
   // Count providers
   byProvider[analysis.provider] = (byProvider[analysis.provider] || 0) + 1;
-  
+
   // Count event types
   analysis.events.forEach(event => {
     byEventType[event] = (byEventType[event] || 0) + 1;
@@ -72,19 +72,19 @@ console.log('  • Provider-specific additional resources and documentation');
 console.log('\n🎯 Example Highlights:');
 
 // Find some interesting examples to highlight
-const restApis = analyses.filter(a => 
+const restApis = analyses.filter(a =>
   a.events.includes('http') || a.events.includes('httpApi')
 ).length;
 
-const scheduledFunctions = analyses.filter(a => 
+const scheduledFunctions = analyses.filter(a =>
   a.events.includes('schedule')
 ).length;
 
-const s3Triggers = analyses.filter(a => 
+const s3Triggers = analyses.filter(a =>
   a.events.includes('s3')
 ).length;
 
-const multiLanguageExamples = analyses.filter(a => 
+const multiLanguageExamples = analyses.filter(a =>
   a.language !== 'unknown' && a.language !== 'JavaScript'
 ).length;
 

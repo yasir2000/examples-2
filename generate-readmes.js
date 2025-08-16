@@ -296,58 +296,58 @@ const getTroubleshootingSection = (language, provider) => {
 function generateReadmeContent(exampleDir) {
   const analysis = analyzeExample(exampleDir);
   const config = parseServerlessConfig(exampleDir);
-  
+
   // Extract metadata from existing README if it exists
   const readmePath = path.join(exampleDir, 'README.md');
   let existingMetadata = '';
   let title = '';
   let description = '';
-  
+
   if (fs.existsSync(readmePath)) {
     const content = fs.readFileSync(readmePath, 'utf8');
     const metadataMatch = content.match(/<!--[\s\S]*?-->/);
     if (metadataMatch) {
       existingMetadata = metadataMatch[0];
-      
+
       // Extract title and description from metadata
       const titleMatch = existingMetadata.match(/title: '([^']+)'/);
       const descMatch = existingMetadata.match(/description: '([^']+)'/);
-      
+
       if (titleMatch) title = titleMatch[1];
       if (descMatch) description = descMatch[1];
     }
-    
+
     // If no metadata title, try to extract from markdown header
     if (!title) {
       const headerMatch = content.match(/^# (.+)$/m);
       if (headerMatch) title = headerMatch[1];
     }
   }
-  
+
   // Generate fallback title and description if not found
   if (!title) {
-    title = exampleDir.split('-').map(word => 
+    title = exampleDir.split('-').map(word =>
       word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ');
   }
-  
+
   if (!description) {
     description = `This example demonstrates how to use Serverless Framework with ${analysis.language} on ${analysis.provider.toUpperCase()}.`;
   }
 
   const content = [];
-  
+
   // Add metadata if it exists
   if (existingMetadata) {
     content.push(existingMetadata, '');
   }
-  
+
   // Title and description
   content.push(`# ${title}`, '', description, '');
-  
+
   // Use cases
   content.push('## Use Cases', '');
-  
+
   // Add relevant use cases based on events
   if (analysis.events.includes('httpApi') || analysis.events.includes('http')) {
     content.push('- REST API backend');
@@ -366,23 +366,23 @@ function generateReadmeContent(exampleDir) {
     content.push('- Queue-based workflows');
   }
   content.push('- Serverless application development', '');
-  
+
   // Prerequisites
   content.push('## Prerequisites', '');
   getPrerequisites(analysis.language, analysis.provider, analysis.hasPackageJson).forEach(req => {
     content.push(req);
   });
   content.push('');
-  
+
   // Installation
-  const needsInstallation = analysis.hasPackageJson || 
+  const needsInstallation = analysis.hasPackageJson ||
     (analysis.language !== 'unknown' && analysis.language !== 'JavaScript') ||
     fs.existsSync(path.join(exampleDir, 'requirements.txt')) ||
     fs.existsSync(path.join(exampleDir, 'go.mod')) ||
     fs.existsSync(path.join(exampleDir, 'Gemfile')) ||
     fs.existsSync(path.join(exampleDir, 'pom.xml')) ||
     fs.existsSync(path.join(exampleDir, 'Cargo.toml'));
-    
+
   if (needsInstallation) {
     content.push('## Installation', '');
     content.push('Install dependencies:', '');
@@ -391,32 +391,32 @@ function generateReadmeContent(exampleDir) {
     });
     content.push('');
   }
-  
+
   // Local Development
   content.push('## Local Development', '');
   getLocalTestingSteps(analysis.language, analysis.functions).forEach(step => {
     content.push(step);
   });
   content.push('');
-  
+
   // Deployment
   content.push('## Deployment', '');
   getDeploymentSteps(analysis.provider).forEach(step => {
     content.push(step);
   });
   content.push('');
-  
+
   // Usage
   getUsageExamples(analysis.events, analysis.functions).forEach(step => {
     content.push(step);
   });
   content.push('');
-  
+
   // Configuration (if there are environment variables or complex setup)
   if (config && (config.provider && config.provider.environment || config.custom)) {
     content.push('## Configuration', '');
     content.push('This service can be configured using environment variables or serverless.yml custom section.', '');
-    
+
     if (config.provider && config.provider.environment) {
       content.push('### Environment Variables', '');
       Object.keys(config.provider.environment).forEach(key => {
@@ -425,19 +425,19 @@ function generateReadmeContent(exampleDir) {
       content.push('');
     }
   }
-  
+
   // Cleanup
   getCleanupSteps().forEach(step => {
     content.push(step);
   });
   content.push('');
-  
+
   // Troubleshooting
   getTroubleshootingSection(analysis.language, analysis.provider).forEach(step => {
     content.push(step);
   });
   content.push('');
-  
+
   // Additional Resources
   content.push(
     '## Additional Resources',
@@ -465,14 +465,14 @@ function generateReadmeContent(exampleDir) {
 // Update README for a specific example
 function updateExampleReadme(exampleDir) {
   console.log(`\nUpdating README for: ${exampleDir}`);
-  
+
   try {
     const readmeContent = generateReadmeContent(exampleDir);
     const readmePath = path.join(exampleDir, 'README.md');
-    
+
     fs.writeFileSync(readmePath, readmeContent);
     console.log(`✅ Updated ${readmePath}`);
-    
+
   } catch (error) {
     console.error(`❌ Error updating ${exampleDir}: ${error.message}`);
   }
@@ -481,19 +481,19 @@ function updateExampleReadme(exampleDir) {
 // Main function to update all READMEs
 function updateAllReadmes() {
   const analysisPath = 'example-analysis.json';
-  
+
   if (!fs.existsSync(analysisPath)) {
     console.error('Please run the analysis first: node update-readmes.js');
     return;
   }
-  
+
   const analyses = JSON.parse(fs.readFileSync(analysisPath, 'utf8'));
-  
+
   console.log(`Updating READMEs for ${analyses.length} examples...`);
-  
+
   let updated = 0;
   let errors = 0;
-  
+
   analyses.forEach(analysis => {
     try {
       updateExampleReadme(analysis.directory);
@@ -503,7 +503,7 @@ function updateAllReadmes() {
       errors++;
     }
   });
-  
+
   console.log(`\n📊 Summary:`);
   console.log(`✅ Updated: ${updated}`);
   console.log(`❌ Errors: ${errors}`);
@@ -519,7 +519,7 @@ module.exports = {
 // Run if called directly
 if (require.main === module) {
   const command = process.argv[2];
-  
+
   if (command === 'all') {
     updateAllReadmes();
   } else if (command && fs.existsSync(command)) {
